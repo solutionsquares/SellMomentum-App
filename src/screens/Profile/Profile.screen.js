@@ -13,6 +13,7 @@ import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-a
 import { DialogMsgClose, DialogMsg, ToastMsg, ToastMsgClose} from '../../utils/notification'
 import { constant } from '../../constant/constant';
 import Header from '../../components/header';
+import { theme } from '../../core/theme';
 const Home = ({ navigation }) => {
   function logout(){
     DialogMsg(constant.errorActionTypes.success,'Logout','Congrats! this is dialog box success')
@@ -23,7 +24,7 @@ const Home = ({ navigation }) => {
   }
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={'#f9f9f9'} />
+      <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
       <SafeAreaView style={styles.SafeAreaView1} />
       <SafeAreaView style={styles.SafeAreaView2}>
         <View style={styles.outerWrapper}>

@@ -8,14 +8,21 @@ import Login from '../screens//Login/Login.screen'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Header from '../components/header'
 import IntroScreen from '../screens/IntroScreen'
+import Signup from '../screens/Signup/signup.screen'
+import PhoneVerify from '../screens/PhoneVerify/phoneVerify.screen'
+import OtpVerify from '../screens/OtpVerify/OtpVerify.screen'
+import MainHeader from '../components/mainHeader'
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
 function AuthTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+    screenOptions={{
+      header: (props) => (<MainHeader title={"Products"} />)
+    }}>
       <Tab.Screen
-        name="Order List"
+        name="Home"
         component={Home}
         options={{
           // headerShown: false,
@@ -30,7 +37,7 @@ function AuthTabs() {
         options={{
           // headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            return <Icon name={'ios-settings'} size={25} color={color} />
+            return <Icon name={'ios-settings'} size={25} color={focused ? color : '#000'} />
           }
         }}
       />
@@ -38,33 +45,67 @@ function AuthTabs() {
   )
 }
 
-function OpenTabs() {
+function simplePage() {
   return (
-    <Stack.Navigator screenOptions={{
-      header: (props) => (<Header {...props} />)}}>
-        {/* {props.introScreen?.isVisible == undefined ? ( */}
-          {/* <Stack.Screen name="IntroScreen" component={introScreen} /> */}
+    <Stack.Navigator
+    screenOptions={{
+      header: (props) => (<Header {...props} />)
+    }}>
+      {/* {props.introScreen?.isVisible == undefined ? ( */}
+      {/* <Stack.Screen name="IntroScreen" component={introScreen} /> */}
       {/* ) : null}  */}
-      <Stack.Screen 
-      name="IntroScreen" 
-      component={IntroScreen}
+      <Stack.Screen
+        name="IntroScreen"
+        component={IntroScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             return <Icon name={'ios-settings'} size={25} color={color} />
           }
         }}
-        />  
-      <Stack.Screen 
-      name="login" 
-      component={Login}
+      />
+
+      <Stack.Screen
+        name="Login"
+        component={Login}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             return <Icon name={'ios-settings'} size={25} color={color} />
           }
         }}
-        />         
+      />
+      <Stack.Screen
+        name="Signup"
+        component={Signup}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            return <Icon name={'ios-settings'} size={25} color={color} />
+          }
+        }}
+      />
+      <Stack.Screen
+        name="PhoneVerify"
+        component={PhoneVerify}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            return <Icon name={'ios-settings'} size={25} color={color} />
+          }
+        }}
+      />
+      <Stack.Screen
+        name="OtpVerify"
+        component={OtpVerify}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            return <Icon name={'ios-settings'} size={25} color={color} />
+          }
+        }}
+      />
+     
       {/* <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="TermsOfUSe" component={TermsOfUSe}  options={{back:true}}/> */}
     </Stack.Navigator>
@@ -75,11 +116,11 @@ function OpenTabs() {
 const MainNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen
+      <Stack.Navigator initialRouteName="HomeBase" screenOptions={{ headerShown: false }}>
+        <Stack.Screen
           name="WithoutAuth"
           options={{ headerShown: false }}
-          component={OpenTabs}
+          component={simplePage}
         />
         <Stack.Screen
           name="HomeBase"

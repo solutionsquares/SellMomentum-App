@@ -6,10 +6,9 @@ import {
   StatusBar,
   TouchableOpacity,
   StyleSheet,
+  TextInput,
   Button
 } from 'react-native'
-import styles from './Login.style'
-import Icon from 'react-native-vector-icons/Ionicons'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUser, selectAll } from '../../stores/user.reducer'
 import BackButton from '../../components/backButton'
@@ -17,13 +16,13 @@ import Input from '../../components/textInput'
 import Header from '../../components/header'
 import { theme } from '../../core/theme'
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
-import { DialogMsgClose, DialogMsg, ToastMsg, ToastMsgClose} from '../../utils/notification'
+import { DialogMsgClose, DialogMsg, ToastMsg, ToastMsgClose } from '../../utils/notification'
 import { constant } from '../../constant/constant'
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
 
-  const onLoginPressed = () => {
+  const onLoginPressed = ({navigation}) => {
     const emailError = emailValidator(email.value)
     const passwordError = passwordValidator(password.value)
     if (emailError || passwordError) {
@@ -37,89 +36,100 @@ const Login = ({ navigation }) => {
     // })
   }
 
-  function LoginFun(){
+  function LoginFun() {
     // console.log("LoginFun")
-    DialogMsg(constant.errorActionTypes.success,'Success','Congrats! this is dialog box success')
-    setTimeout(()=>{
+    DialogMsg(constant.errorActionTypes.success, 'Success', 'Congrats! this is dialog box success')
+    setTimeout(() => {
       DialogMsgClose()
-      navigation.replace('HomeBase',{screen:'Home'})
-    },3000)
-    
+      navigation.replace('HomeBase', { screen: 'Home' })
+    }, 3000)
+
   }
-
-
+  function SignUpPage(){
+    navigation.navigate('WithoutAuth', { screen: 'Signup' })
+  }
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={'#f9f9f9'} />
-      {/* <SafeAreaView style={styles.SafeAreaView1} /> */}
-      <SafeAreaView style={styles.SafeAreaView2}>
-        {/* <BackButton goBack={navigation.goBack} /> */}
-        {/* <Logo /> */}
-        {/* <Header>Welcome back.</Header> */}
-        <Input
-          label="Email"
-          returnKeyType="next"
-          value={email.value}
-          onChangeText={(text) => setEmail({ value: text, error: '' })}
-          error={!!email.error}
-          errorText={email.error}
-          autoCapitalize="none"
-          autoCompleteType="email"
-          textContentType="emailAddress"
-          keyboardType="email-address"
-        />
-        <Input
-          label="Password"
-          returnKeyType="done"
-          value={password.value}
-          onChangeText={(text) => setPassword({ value: text, error: '' })}
-          error={!!password.error}
-          errorText={password.error}
-          secureTextEntry
-        />
-        {/* <View style={styles.forgotPassword}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ResetPasswordScreen')}
-          >
-            <Text style={styles.forgot}>Forgot your password?</Text>
-          </TouchableOpacity>
-        </View> */}
-        {/* <Button onPress={onLoginPressed}>
-          <Text>Login</Text>
-        </Button> */}
-        <View style={styleUser.row}>
-          <Text>Don’t have an account? </Text>
-          <TouchableOpacity onPress={() => LoginFun()}>
-            <Text style={styles.link}>Sign up</Text>
-          </TouchableOpacity>
+
+      <View style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
+        <View style={styles.topBox}>
+          <View>
+            <Text style={[theme.whiteTitle,styles.allMargen]}>Welcome to tradly</Text>
+          </View>
+          <View>
+            <Text style={[theme.whiteText,styles.allMargen]}>Login to your account</Text>
+          </View>
+        </View>
+        <View style={styles.bottomBox}>
+          <TextInput
+            style={theme.input}
+            placeholder="Email/Mobile Number"
+            placeholderTextColor={theme.colors.white}
+          />
+          <TextInput
+            style={theme.input}
+            placeholder="Password"
+            placeholderTextColor={theme.colors.white}
+            secureTextEntry
+          />
+          <View style={styles.nextButton}>
+            <TouchableOpacity >
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={theme.centerCss}>
+            <Text style={[theme.whiteText,styles.allMargen]}>Forgot your password?</Text>
+          </View>
+          <View style={[theme.centerCss,theme.rowView]}>
+            <View>
+              <Text style={[theme.whiteText,styles.allMargen]}>Don’t have an account? </Text>
+            </View>
+            <TouchableOpacity onPress={()=>SignUpPage()}>
+            <View>
+              <Text style={[theme.whiteText,styles.allMargen,styles.boldText]}>Sign up</Text>
+            </View>
+            </TouchableOpacity>
+          </View>
         </View>
 
-      </SafeAreaView>
+      </View>
     </>
   )
 }
 
-const styleUser = StyleSheet.create({
-  forgotPassword: {
-    width: '100%',
-    alignItems: 'flex-end',
-    marginBottom: 24,
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.primary,
+    justifyContent: "center",
+    padding: 20
   },
-  row: {
-    justifyContent:"center",
-    alignItems:"center",
-    flexDirection: 'row',
-    marginTop: 4,
+  boldText:{
+    fontWeight: "900"
   },
-  forgot: {
-    fontSize: 13,
-    color: theme.colors.secondary,
+  nextButton: {
+    backgroundColor: theme.colors.white,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+    alignItems: "center",
+    marginTop: 20,
   },
-  link: {
-    fontWeight: 'bold',
+  buttonText: {
     color: theme.colors.primary,
   },
+  allMargen:{
+    margin:20
+  },
+  topBox:{
+    flex: 0.4,alignItems:"center",justifyContent:"center" 
+  },
+  bottomBox:{
+    flex: 0.6 
+  },
+  
 })
 
 export default Login

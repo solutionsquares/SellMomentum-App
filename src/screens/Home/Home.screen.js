@@ -12,6 +12,9 @@ import styles from './Home.style'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUser, selectAll } from '../../../src/stores/user.reducer'
+import { theme } from '../../core/theme'
+import SearchInput from '../../components/searchInput'
+// import ImageSlider from '../../components/imageSlider'
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch()
@@ -70,13 +73,12 @@ const Home = ({ navigation }) => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={'#f9f9f9'} />
+      <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
       <SafeAreaView style={styles.SafeAreaView1} />
       <SafeAreaView style={styles.SafeAreaView2}>
-        <View style={styles.outerWrapper}>
-          {/* <Icon name={'ios-person'} size={100} color={'purple'} />
-          <Icon name={'ios-home'} size={100} color={'purple'} /> */}
-
+        <View>
+          <SearchInput />
+          {/* <ImageSlider /> */}
           <View>
             {/* <TouchableOpacity
               style={styles.buttonStyle}

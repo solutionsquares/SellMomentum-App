@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions,StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUser, selectAll } from '../../stores/user.reducer'
@@ -29,6 +29,7 @@ const IntroScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
             <View style={styles.topHalf} />
             <View style={styles.bottomHalf} />
             <View style={[styles.overlay, isLandscape && styles.landscapeOverlay]}>
@@ -36,7 +37,6 @@ const IntroScreen = ({ navigation }) => {
                     <View style={[styles.slider, styles.overlayContent]}>
                         <Image source={require('../../assets/icons/Group6.png')} />
                         <Text style={styles.description}>Empowering Artisans, Farmers & Micro Business</Text>
-
                     </View>
                     <View style={[styles.slider, styles.overlayContent]}>
                         <Image source={require('../../assets/icons/Group6.png')} />
@@ -48,7 +48,7 @@ const IntroScreen = ({ navigation }) => {
                         <Text style={styles.description}>Empowering Artisans, Farmers & Micro Business</Text>
                     </View>
                 </Swiper>
-                <TouchableOpacity style={styles.nextButton}>
+                <TouchableOpacity style={styles.nextButton} onPress={()=>navigation.replace('WithoutAuth', { screen: 'Login' })}>
                     <Text style={styles.buttonText}>Next</Text>
                 </TouchableOpacity>
             </View >

@@ -8,12 +8,7 @@ export default StyleSheet.create({
   },
   SafeAreaView1: { backgroundColor: '#FFF', flex: 0 },
   SafeAreaView2: { flex: 1, backgroundColor: '#FFF' },
-  outerWrapper: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFF'
-  },
+  
   buttonStyle: {
     backgroundColor: '#EEE',
     paddingHorizontal: 40,
