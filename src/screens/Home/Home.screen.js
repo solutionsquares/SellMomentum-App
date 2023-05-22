@@ -14,10 +14,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchUser, selectAll } from '../../../src/stores/user.reducer'
 import { theme } from '../../core/theme'
 import SearchInput from '../../components/searchInput'
+import SagmentView from '../../components/sagment'
 // import ImageSlider from '../../components/imageSlider'
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch()
+  const data = [
+    { id: 1, name: 'Sort by',icon:'sort-amount-desc' },
+    { id: 2, name: 'Location',icon:'map-marker' },
+    { id: 3, name: 'Category',icon:'th-list' },
+    // Add more items as needed
+  ];
   const [users, setUsers] = useState([{
     id: 1,
     employee_name: 'Sagar'
@@ -78,6 +85,7 @@ const Home = ({ navigation }) => {
       <SafeAreaView style={styles.SafeAreaView2}>
         <View>
           <SearchInput />
+          <SagmentView  sagmentData={data}/>
           {/* <ImageSlider /> */}
           <View>
             {/* <TouchableOpacity

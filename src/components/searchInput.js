@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         borderColor: '#ccc', 
         borderWidth: 1,
         borderRadius:25,
-        paddingLeft:20,
+        paddingHorizontal:20,
         backgroundColor:theme.colors.white
     },
     searchInput:{ 

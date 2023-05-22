@@ -48,5 +48,11 @@ export const theme = {
   },
   flexLeft:{
     justifyContent:"flex-start"
+  },
+  vertical10Padding:{
+    paddingVertical:10
+  },
+  horizontal10Padding:{
+    paddingHorizontal: 10,
   }
 }
