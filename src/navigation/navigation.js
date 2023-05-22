@@ -5,13 +5,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Home from '../screens/Home/Home.screen'
 import Profile from '../screens/Profile/Profile.screen'
 import Login from '../screens//Login/Login.screen'
-import Icon from 'react-native-vector-icons/Ionicons'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import Entypo from 'react-native-vector-icons/Entypo'
 import Header from '../components/header'
 import IntroScreen from '../screens/IntroScreen'
 import Signup from '../screens/Signup/signup.screen'
 import PhoneVerify from '../screens/PhoneVerify/phoneVerify.screen'
 import OtpVerify from '../screens/OtpVerify/OtpVerify.screen'
 import MainHeader from '../components/mainHeader'
+import { theme } from '../core/theme'
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
@@ -27,17 +30,47 @@ function AuthTabs() {
         options={{
           // headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            return <Icon name={'ios-home'} size={25} color={color} />
+            return <FontAwesome name={'home'} size={20} color={color} />
           }
         }}
       />
       <Tab.Screen
-        name="Create Order"
+        name="Browse"
         component={Profile}
         options={{
           // headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            return <Icon name={'ios-settings'} size={25} color={focused ? color : '#000'} />
+            return <FontAwesome name={'search'} size={20} color={focused ? theme.colors.primary : theme.colors.gray} />
+          }
+        }}
+      />
+       <Tab.Screen
+        name="Product"
+        component={Profile}
+        options={{
+          // headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            return <FontAwesome5 name={'store'} size={20} color={focused ? theme.colors.primary : theme.colors.gray} />
+          }
+        }}
+      />
+       <Tab.Screen
+        name="Order History"
+        component={Profile}
+        options={{
+          // headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            return <Entypo name={'text-document-inverted'} size={20} color={focused ? theme.colors.primary : theme.colors.gray} />
+          }
+        }}
+      />
+       <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          // headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            return <FontAwesome5 name={'user-alt'} size={20} color={focused ? theme.colors.primary : theme.colors.gray} />
           }
         }}
       />
@@ -60,7 +93,7 @@ function simplePage() {
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            return <Icon name={'ios-settings'} size={25} color={color} />
+            return <FontAwesome name={'ios-settings'} size={25} color={color} />
           }
         }}
       />
@@ -71,7 +104,7 @@ function simplePage() {
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            return <Icon name={'ios-settings'} size={25} color={color} />
+            return <FontAwesome name={'ios-settings'} size={25} color={color} />
           }
         }}
       />
@@ -81,7 +114,7 @@ function simplePage() {
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            return <Icon name={'ios-settings'} size={25} color={color} />
+            return <FontAwesome name={'ios-settings'} size={25} color={color} />
           }
         }}
       />
@@ -91,7 +124,7 @@ function simplePage() {
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            return <Icon name={'ios-settings'} size={25} color={color} />
+            return <FontAwesome name={'ios-settings'} size={25} color={color} />
           }
         }}
       />
@@ -101,7 +134,7 @@ function simplePage() {
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            return <Icon name={'ios-settings'} size={25} color={color} />
+            return <FontAwesome name={'ios-settings'} size={25} color={color} />
           }
         }}
       />
