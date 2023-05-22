@@ -18,7 +18,6 @@ class Api {
     }
     static async post(route, params, header, domain) {
         let v = await this.helpieTask(route, params, {
-            // Authorization: `Basic aGVscGllOmJhY2tlbmQ=`,
             'Content-Type': 'application/json',
         }, 'POST');
         console.log('---v----', v)
@@ -64,9 +63,8 @@ class Api {
         // return this.wellAcademyTask(route, null,token, 'GET');
     }
     static helpieTask(route, params, header, verb) {
-        const host = 'https://dummy.restapiexample.com/api/v1/';
+        const host = 'http://192.168.1.175:9000/v1';
         // const host = 'http://192.168.1.135:4024';
-
         const url = `${host}${route}`;
         console.log('URL CALLLED-----', url);
         const options = { method: verb, ...(params ? { body: params } : null) };

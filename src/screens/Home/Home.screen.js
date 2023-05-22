@@ -19,6 +19,7 @@ import SagmentView from '../../components/sagment'
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch()
+  const user = useSelector(selectAll)
   const data = [
     { id: 1, name: 'Sort by',icon:'sort-amount-desc' },
     { id: 2, name: 'Location',icon:'map-marker' },
@@ -44,19 +45,12 @@ const Home = ({ navigation }) => {
     id: 1,
     employee_name: 'Sagar'
   }])
-
   useEffect(() => {
     // getData()
+    console.log(user)
   }, [])
 
-  async function getData() {
-    await dispatch(selectAll()).then((res) => {
-      setUsers(res.payload.data)
-      console.log(res)
-      // setUsers(dispatch(res.payload.data))
-    })
-    // await setUsers(dispatch(selectAll()))
-  }
+  
   // useEffect(()=>{
   //   ListUser()
   // },[users])

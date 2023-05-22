@@ -13,15 +13,13 @@ import { constant } from '../../constant/constant'
 import Swiper from 'react-native-swiper'
 const IntroScreen = ({ navigation }) => {
     const [isLandscape, setIsLandscape] = useState(false);
-
+    const user = useSelector(selectAll)
     useEffect(() => {
         const updateOrientation = () => {
             const { width, height } = Dimensions.get('window');
             setIsLandscape(width > height);
         };
-
         Dimensions.addEventListener('change', updateOrientation);
-
         return () => {
             Dimensions.removeEventListener('change', updateOrientation);
         };

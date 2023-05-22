@@ -22,14 +22,10 @@ export default function Input({ errorText, description, ...props }) {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    marginVertical: 12,
-    paddingRight:15,
-    paddingLeft:15
   },
   input: {
     backgroundColor: theme.colors.surface,
     borderRadius:5,
-    padding:10
   },
   description: {
     fontSize: 13,

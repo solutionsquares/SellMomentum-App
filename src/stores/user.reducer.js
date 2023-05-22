@@ -5,25 +5,18 @@ import {
 } from '@reduxjs/toolkit'
 import { getUser,getAllList } from '../api/ApiUser'
 
-export const fetchUser = createAsyncThunk('user/getUser', async () => {
-  const response = await getUser()
+export const fetchUser = createAsyncThunk('user/getUser', async (obj) => {
+  const response = await getUser(obj)
   return response
 })
 
-export const selectAll = createAsyncThunk('user/getAllList', async () => {
-  console.log("getAllList user")
-  const response = await getAllList()
-  console.log("response",response)
-  return response
-})
+
 
 const userAdapter = createEntityAdapter()
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: userAdapter.getInitialState({
-    isLoading: false,
-  }),
+  initialState: userAdapter.getInitialState([]),
   reducers: {},
   extraReducers: builder => {
     builder
@@ -31,8 +24,8 @@ const userSlice = createSlice({
         state.isLoading = true
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
-        userAdapter.setAll(state, action.payload)
-        state.isLoading = false
+        if(action.payload) userAdapter.setAll(state, [action.payload.data])
+        userAdapter.getSelectors(state => state.members)
       })
       .addCase(fetchUser.rejected, state => {
         state.isLoading = false
@@ -47,6 +40,7 @@ const userSlice = createSlice({
   }
 })
 
-// export const { selectAll } = userAdapter.getSelectors(state => state.members)
 
+
+export const { selectAll } = userAdapter.getSelectors(state => state.user)
 export default userSlice.reducer

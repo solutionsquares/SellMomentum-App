@@ -2,18 +2,16 @@
 import Api from "./api"
 
 export const getUser = (obj) => {
-  console.log("obj")
+  console.log("obj 1",obj)
   try {
-    return Api.post("auth", JSON.stringify({
-      "username": "admin",
-      "password": "password123"
-    }))
+    return Api.post("/user/login", JSON.stringify(obj))
       .then((resp) => {
         return resp
       }).catch((error) => {
         console.log(error)
       })
   } catch (e) {
+    console.log("e",e)
     return Promise.reject(e)
   }
 }

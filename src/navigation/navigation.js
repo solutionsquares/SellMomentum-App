@@ -145,11 +145,10 @@ function simplePage() {
   )
 }
 
-
 const MainNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="HomeBase" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="WithoutAuth"
           options={{ headerShown: false }}
