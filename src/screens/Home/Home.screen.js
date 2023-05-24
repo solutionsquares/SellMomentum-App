@@ -15,7 +15,7 @@ import { fetchUser, selectAll } from '../../../src/stores/user.reducer'
 import { theme } from '../../core/theme'
 import SearchInput from '../../components/searchInput'
 import SagmentView from '../../components/sagment'
-import { fetchSellerProduct } from '../../stores/product.reducer'
+import { fetchSellerProduct } from '../../stores/product&Category.reducer'
 // import ImageSlider from '../../components/imageSlider'
 
 const Home = ({ navigation }) => {
