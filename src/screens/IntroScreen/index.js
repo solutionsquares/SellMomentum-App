@@ -9,21 +9,36 @@ import Header from '../../components/header'
 import { theme } from '../../core/theme'
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import { DialogMsgClose, DialogMsg, ToastMsg, ToastMsgClose } from '../../utils/notification'
-import { constant } from '../../constant/constant'
+
 import Swiper from 'react-native-swiper'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AsyncStorageGetData } from '../../utils/asyncStorageUtil';
+import { constant } from '../../constant/constant';
 const IntroScreen = ({ navigation }) => {
     const [isLandscape, setIsLandscape] = useState(false);
-    const user = useSelector(selectAll)
+    const user = useSelector(state => state?.user?.entities?.undefined)
+    useEffect(()=>{
+        console.log("user",user)
+        if(user){
+            if(user?.token){
+                navigation.replace('HomeBase', { screen: 'Home' })
+            }else{
+                navigation.replace('WithoutAuth', { screen: 'Login' })
+            }
+        }
+    },[])
     useEffect(() => {
         const updateOrientation = () => {
             const { width, height } = Dimensions.get('window');
             setIsLandscape(width > height);
         };
         Dimensions.addEventListener('change', updateOrientation);
+        
         return () => {
             Dimensions.removeEventListener('change', updateOrientation);
         };
     }, []);
+   
 
     return (
         <View style={styles.container}>

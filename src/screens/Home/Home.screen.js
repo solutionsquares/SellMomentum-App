@@ -15,40 +15,46 @@ import { fetchUser, selectAll } from '../../../src/stores/user.reducer'
 import { theme } from '../../core/theme'
 import SearchInput from '../../components/searchInput'
 import SagmentView from '../../components/sagment'
+import { fetchSellerProduct } from '../../stores/product.reducer'
 // import ImageSlider from '../../components/imageSlider'
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch()
-  const user = useSelector(selectAll)
+  const [ApiLoader, setApiLoader] = useState(false);
+  const all = useSelector(state => state)
   const data = [
     { id: 1, name: 'Sort by',icon:'sort-amount-desc' },
     { id: 2, name: 'Location',icon:'map-marker' },
     { id: 3, name: 'Category',icon:'th-list' },
     // Add more items as needed
   ];
-  const [users, setUsers] = useState([{
-    id: 1,
-    employee_name: 'Sagar'
-  },{
-    id: 1,
-    employee_name: 'Sagar'
-  },{
-    id: 1,
-    employee_name: 'Sagar'
-  },{
-    id: 1,
-    employee_name: 'Sagar'
-  },{
-    id: 1,
-    employee_name: 'Sagar'
-  },{
-    id: 1,
-    employee_name: 'Sagar'
-  }])
+  const user = useSelector(state => state?.user?.entities?.undefined)
+  const [products, setProducts] = useState()
   useEffect(() => {
     // getData()
-    console.log(user)
+    fetchProducts(user.user._id)
+    console.log(all)
   }, [])
+
+  async function fetchProducts(id){
+    setApiLoader(true)
+    await dispatch(fetchSellerProduct(id)).then(async (res) => {
+      if (res) {        
+        console.log("res",res)
+        setProducts(res.payload.data)
+        try {
+        } catch (error) {
+          console.log("error",error)
+        }
+        
+        setApiLoader(false)
+        
+      } else {
+        setApiLoader(false)
+      }
+
+    })
+  }
 
   
   // useEffect(()=>{
@@ -89,11 +95,11 @@ const Home = ({ navigation }) => {
               <Text style={styles.text}>Click here to show User data:</Text>
             </TouchableOpacity> */}
             <FlatList
-              data={users}
+              data={products}
               renderItem={({ item }) =>
                 <View key={item.id} style={styles.styleUser}>
                   <Text style={{ fontSize: 15 }}>
-                    {item.employee_name}
+                    {item.name}
                   </Text>
                 </View>
               }

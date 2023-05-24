@@ -46,13 +46,17 @@ const Login = ({ navigation }) => {
       "email": email.value,
       "password": password.value
     })).then(async (res) => {
-      if (res) {
-        console.log("res",res.payload)
+      if (res) {        
+        console.log("res",res)
+        //
+        try {
+        } catch (error) {
+          console.log("error",error)
+        }
         
-        // AsyncStorageSetData(constant.AsyncStorageKey, JSON.stringify(res.payload[0]))
         setApiLoader(false)
         ToastMsg(constant.errorActionTypes.success, 'Success', 'OTP successfully send')
-        navigation.navigate('HomeBase', { screen: 'Home' })
+        navigation.replace('HomeBase', { screen: 'Home' })
         // navigation.navigate('PhoneVerify', { screen: 'Home', confirm: response })
       } else {
         setApiLoader(false)

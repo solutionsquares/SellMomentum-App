@@ -1,10 +1,10 @@
 //example api request: replace with your API request here in folder API
 import Api from "./api"
 
-export const getUser = (obj) => {
+export const getSellerProduct = (obj) => {
   console.log("obj 1",obj)
   try {
-    return Api.post("/user/login", JSON.stringify(obj))
+    return Api.post("/seller/login", JSON.stringify(obj))
       .then((resp) => {
         return resp
       }).catch((error) => {

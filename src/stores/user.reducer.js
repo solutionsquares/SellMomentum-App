@@ -4,6 +4,8 @@ import {
   createEntityAdapter
 } from '@reduxjs/toolkit'
 import { getUser,getAllList } from '../api/ApiUser'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { constant } from '../constant/constant';
 
 export const fetchUser = createAsyncThunk('user/getUser', async (obj) => {
   const response = await getUser(obj)
@@ -20,16 +22,12 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(fetchUser.pending, (state, action) => {
-        state.isLoading = true
-      })
+      
       .addCase(fetchUser.fulfilled, (state, action) => {
         if(action.payload) userAdapter.setAll(state, [action.payload.data])
-        userAdapter.getSelectors(state => state.members)
+        userAdapter.getSelectors(state => state.user)
       })
-      .addCase(fetchUser.rejected, state => {
-        state.isLoading = false
-      })
+    
       // .addCase(selectAll.fulfilled, (state, action) => {
       //   console.log("sgr",action.payload)
       //   if(action.payload) userAdapter.setAll(state, action.payload)
