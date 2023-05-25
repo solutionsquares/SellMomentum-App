@@ -25,5 +25,61 @@ export default StyleSheet.create({
     with:'100%',
     padding: 1,
     marginTop: 10
-  }
+  },
+  cardContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    margin:5,
+    elevation: 3,
+    width:170,
+  },
+  image: {
+    width: '100%',
+    height: 150,
+    resizeMode:'cover',
+    marginTop:0.1,
+    borderRadius:15
+  },
+  content: {
+    marginTop: 8,
+    padding:10
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  price: {
+    fontSize: 14,
+    color: '#888888',
+  },
+
+  containerCenterd: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  leftText: {
+    color:'black',
+    marginRight: 'auto',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  rightText: {
+    marginLeft: 'auto',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  circle: {
+    width: 35,
+    height: 35,
+    borderRadius: 25,
+    backgroundColor: '#33907C',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  letter: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
 })

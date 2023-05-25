@@ -36,6 +36,15 @@ export const theme = {
     marginBottom: 20,
     padding: 10,
   },
+  inputDark: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: "#000",
+    borderRadius: 25,
+    color: "#000",
+    marginBottom: 20,
+    padding: 10,
+  },
   centerCss:{
     alignItems:"center",
     justifyContent:"center"
@@ -54,5 +63,6 @@ export const theme = {
   },
   horizontal10Padding:{
     paddingHorizontal: 10,
-  }
+  },
+  
 }

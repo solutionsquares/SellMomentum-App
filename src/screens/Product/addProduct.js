@@ -73,15 +73,8 @@ const AddProduct = ({ navigation }) => {
 
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
-        <View style={styles.topBox}>
-          <View>
-            <Text style={[theme.whiteTitle, styles.allMargen]}>Welcome to tradly</Text>
-          </View>
-          <View>
-            <Text style={[theme.whiteText, styles.allMargen]}>Login to your account</Text>
-          </View>
-        </View>
-        <View style={styles.bottomBox}>
+        
+        <View>
           <Input
             label="Email/Mobile Number"
             returnKeyType="next"
@@ -94,27 +87,91 @@ const AddProduct = ({ navigation }) => {
             textContentType="email"
             keyboardType={'email'}
             maxLength={100}
-            placeholderTextColor={theme.colors.white}
-            selectionColor="#fff"
-            style={theme.input}
+            placeholderTextColor={theme.colors.secondary}
+            selectionColor={theme.colors.secondary}
+            style={theme.inputDark}
           />
           <Input
-            label="Password"
+            label="Product Name"
             returnKeyType="next"
-            value={password.value}
-            onChangeText={(text) => setPassword({ value: text, error: '' })}
-            error={!!password.error}
-            errorText={password.error}
+            value={email.value}
+            onChangeText={(text) => setEmail({ value: text, error: '' })}
+            error={!!email.error}
+            errorText={email.error}
             autoCapitalize="none"
             autoCompleteType="text"
             textContentType="text"
             keyboardType={'text'}
             maxLength={100}
-            placeholderTextColor={theme.colors.white}
-            selectionColor="#fff"
-            style={theme.input}
-            secureTextEntry
+            placeholderTextColor={theme.colors.secondary}
+            selectionColor={theme.colors.secondary}
+            style={theme.inputDark}
           />
+          <Input
+            label="Description"
+            returnKeyType="next"
+            value={email.value}
+            onChangeText={(text) => setEmail({ value: text, error: '' })}
+            error={!!email.error}
+            errorText={email.error}
+            autoCapitalize="none"
+            autoCompleteType="text"
+            textContentType="text"
+            keyboardType={'text'}
+            maxLength={100}
+            placeholderTextColor={theme.colors.secondary}
+            selectionColor={theme.colors.secondary}
+            style={theme.inputDark}
+          />
+          <Input
+            label="Price"
+            returnKeyType="next"
+            value={email.value}
+            onChangeText={(text) => setEmail({ value: text, error: '' })}
+            error={!!email.error}
+            errorText={email.error}
+            autoCapitalize="none"
+            autoCompleteType="text"
+            textContentType="text"
+            keyboardType={'text'}
+            maxLength={100}
+            placeholderTextColor={theme.colors.secondary}
+            selectionColor={theme.colors.secondary}
+            style={theme.inputDark}
+          />
+          <Input
+            label="In Stock"
+            returnKeyType="next"
+            value={email.value}
+            onChangeText={(text) => setEmail({ value: text, error: '' })}
+            error={!!email.error}
+            errorText={email.error}
+            autoCapitalize="none"
+            autoCompleteType="text"
+            textContentType="text"
+            keyboardType={'text'}
+            maxLength={100}
+            placeholderTextColor={theme.colors.secondary}
+            selectionColor={theme.colors.secondary}
+            style={theme.inputDark}
+          />
+          <Input
+            label="In Category"
+            returnKeyType="next"
+            value={email.value}
+            onChangeText={(text) => setEmail({ value: text, error: '' })}
+            error={!!email.error}
+            errorText={email.error}
+            autoCapitalize="none"
+            autoCompleteType="text"
+            textContentType="text"
+            keyboardType={'text'}
+            maxLength={100}
+            placeholderTextColor={theme.colors.secondary}
+            selectionColor={theme.colors.secondary}
+            style={theme.inputDark}
+          />
+          
 
           {/* <TextInput
             style={theme.input}
@@ -124,12 +181,10 @@ const AddProduct = ({ navigation }) => {
           /> */}
           <TouchableOpacity onPress={() => LoginFun()}>
             <View style={styles.nextButton}>
-
-              <Text style={styles.buttonText}>Login</Text>
-
+              <Text style={theme.whiteText}>Submit</Text>
             </View>
           </TouchableOpacity>
-          <View style={theme.centerCss}>
+          {/* <View style={theme.centerCss}>
             <Text style={[theme.whiteText, styles.allMargen]}>Forgot your password?</Text>
           </View>
           <View style={[theme.centerCss, theme.rowView]}>
@@ -141,7 +196,7 @@ const AddProduct = ({ navigation }) => {
                 <Text style={[theme.whiteText, styles.allMargen, styles.boldText]}>Sign up</Text>
               </View>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
 
       </View>
@@ -152,7 +207,6 @@ const AddProduct = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.primary,
     justifyContent: "center",
     padding: 20
   },
@@ -160,7 +214,7 @@ const styles = StyleSheet.create({
     fontWeight: "900"
   },
   nextButton: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.primary,
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 25,
@@ -173,12 +227,8 @@ const styles = StyleSheet.create({
   allMargen: {
     margin: 20
   },
-  topBox: {
-    flex: 0.4, alignItems: "center", justifyContent: "center"
-  },
-  bottomBox: {
-    flex: 0.6
-  },
+  
+ 
 
 })
 

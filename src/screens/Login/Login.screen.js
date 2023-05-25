@@ -70,9 +70,6 @@ const Login = ({ navigation }) => {
     // }, 3000)
 
   }
-  function SignUpPage() {
-    navigation.navigate('WithoutAuth', { screen: 'Signup' })
-  }
 
   return (
     <>

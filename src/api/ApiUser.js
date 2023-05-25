@@ -1,7 +1,7 @@
 //example api request: replace with your API request here in folder API
 import Api from "./api"
 
-export const getSellerProduct = (obj) => {
+export const getUser = (obj) => {
   console.log("obj 1",obj)
   try {
     return Api.post("/seller/login", JSON.stringify(obj))

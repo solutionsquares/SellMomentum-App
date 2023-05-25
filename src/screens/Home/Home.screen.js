@@ -6,7 +6,8 @@ import {
   StatusBar,
   TouchableOpacity,
   StyleSheet,
-  FlatList
+  FlatList,
+  Image
 } from 'react-native'
 import styles from './Home.style'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -16,97 +17,192 @@ import { theme } from '../../core/theme'
 import SearchInput from '../../components/searchInput'
 import SagmentView from '../../components/sagment'
 import { fetchSellerProduct } from '../../stores/product&Category.reducer'
-// import ImageSlider from '../../components/imageSlider'
+import { FloatingAction } from "react-native-floating-action";
+import CategoryComponent from '../../components/categoryComponents/categoryComponents'
+import CustomButton from '../../components/buttonComponents/buttonComponents'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch()
   const [ApiLoader, setApiLoader] = useState(false);
   const all = useSelector(state => state)
-  const data = [
-    { id: 1, name: 'Sort by',icon:'sort-amount-desc' },
-    { id: 2, name: 'Location',icon:'map-marker' },
-    { id: 3, name: 'Category',icon:'th-list' },
+  const sagmentData = [
+    { id: 1, name: 'Sort by', icon: 'sort-amount-desc' },
+    { id: 2, name: 'Location', icon: 'map-marker' },
+    { id: 3, name: 'Category', icon: 'th-list' },
     // Add more items as needed
+  ];
+  const categories = [
+    { id: 1, category: 'Beverages', image: require('../../assets/images/categoriesImage/cat1.png') },
+    { id: 2, category: 'Bread & Bakery', image: require('../../assets/images/categoriesImage/cat2.png') },
+    { id: 3, category: 'Vegetables', image: require('../../assets/images/categoriesImage/cat3.png') },
+    { id: 4, category: 'Fruit', image: require('../../assets/images/categoriesImage/cat4.png') },
+    { id: 5, category: 'Egg', image: require('../../assets/images/categoriesImage/cat5.png') },
+    { id: 6, category: 'Frozen veg', image: require('../../assets/images/categoriesImage/cat6.png') },
+    { id: 7, category: 'Homecare', image: require('../../assets/images/categoriesImage/cat7.png') },
+    { id: 8, category: 'Pet Care', image: require('../../assets/images/categoriesImage/cat8.png') },
   ];
   const user = useSelector(state => state?.user?.entities?.undefined)
   const [products, setProducts] = useState()
+  const actions = [
+    {
+      text: "Category",
+      icon: require("../../assets/icons/menu.png"),
+      name: "categoryBtn",
+      position: 1,
+      color: theme.colors.primary
+    },
+    {
+      text: "Product",
+      icon: require("../../assets/icons/box.png"),
+      name: "productBtn",
+      position: 2,
+      color: theme.colors.primary
+    }
+  ];
+  const data = [
+    { id: 1, title: 'Product 1', price: '$10', image: require('../../assets/images/test.jpeg') },
+    { id: 2, title: 'Product 2', price: '$20', image: require('../../assets/images/test.jpeg') },
+    { id: 3, title: 'Product 3', price: '$30', image: require('../../assets/images/test.jpeg') },
+    { id: 4, title: 'Product 3', price: '$30', image: require('../../assets/images/test.jpeg') },
+    // Add more data objects as needed
+  ];
   useEffect(() => {
     // getData()
     fetchProducts(user.user._id)
-    console.log(all)
   }, [])
 
-  async function fetchProducts(id){
+  async function fetchProducts(id) {
     setApiLoader(true)
     await dispatch(fetchSellerProduct(id)).then(async (res) => {
-      if (res) {        
-        console.log("res",res)
+      if (res) {
+        console.log("res", res)
         setProducts(res.payload.data)
         try {
         } catch (error) {
-          console.log("error",error)
+          console.log("error", error)
         }
-        
+
         setApiLoader(false)
-        
+
       } else {
         setApiLoader(false)
       }
 
     })
   }
+  const handleButtonPress = () => {
+    console.log('Button pressed!');
+    // Handle button press here
+  };
 
-  
-  // useEffect(()=>{
-  //   ListUser()
-  // },[users])
 
-  // function ListUser() {
-  //   console.log("ListUser")
-  //   if (users.length > 0) {
-  //     console.log("users", users)
-  //     return users.map(data => {
-  //       return (
-  //         <View key={data.id} style={styleUser}>
-  //           <Text style={{ fontSize: 15 }}>
-  //             {data.employee_name}
-  //           </Text>
-  //         </View>
-  //       )
-  //     })
-  //   }
+  const renderItem = ({ item }) => (
+    // <TouchableOpacity style={styles.cardContainer} >
+    <View style={styles.cardContainer} >
+      <Image source={item.image} style={styles.image} />
+      <View style={styles.content}>
+        <Text style={{ color: 'red' }}>{item.title}</Text>
+      </View>
+      <View style={{ padding: 10, }}>
+        <View style={[styles.containerCenterd,]}>
+          <View style={[styles.leftText]}>
+            <View style={styles.circle}>
+              <Text style={styles.letter}>T</Text>
+            </View>
+          </View>
+          <View style={[styles.leftText]}>
+            <Text>Tradly</Text>
+          </View>
+          <View style={styles.rightText}>
+            <Text>$10</Text>
+          </View>
+        </View>
+      </View>
 
-  // }
+    </View>
+  );
 
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
       <SafeAreaView style={styles.SafeAreaView1} />
       <SafeAreaView style={styles.SafeAreaView2}>
-        <View>
-          <SearchInput />
-          <SagmentView  sagmentData={data}/>
-          {/* <ImageSlider /> */}
-          <View>
-            {/* <TouchableOpacity
-              style={styles.buttonStyle}
-            onPress={() => getData()}
-            >
-              <Text style={styles.text}>Click here to show User data:</Text>
-            </TouchableOpacity> */}
-            <FlatList
-              data={products}
-              renderItem={({ item }) =>
-                <View key={item.id} style={styles.styleUser}>
-                  <Text style={{ fontSize: 15 }}>
-                    {item.name}
-                  </Text>
+        <ScrollView>
+          <View >
+            <SearchInput />
+            <SagmentView sagmentData={sagmentData} />
+
+            <View style={{ paddingHorizontal: 20 }}>
+              <View>
+                <CategoryComponent data={categories} ></CategoryComponent>
+              </View>
+              <View>
+                <View style={styles.containerCenterd}>
+                  <Text style={styles.leftText}>New Product </Text>
+                  <View style={styles.rightText}>
+                    <CustomButton onPress={handleButtonPress} title="See All" />
+                  </View>
                 </View>
-              }
-              keyExtractor={item => item.id}
+                <FlatList
+                  data={data}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.id.toString()}
+                  horizontal
+                />
+              </View>
+            </View>
+
+            <View style={{ paddingHorizontal: 20 }}>
+              <View>
+                <View style={styles.containerCenterd}>
+                  <Text style={styles.leftText}>Popular Product </Text>
+                  <View style={styles.rightText}>
+                    <CustomButton onPress={handleButtonPress} title="See All" />
+                  </View>
+                </View>
+                <FlatList
+                  data={data}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.id.toString()}
+                  horizontal
+                />
+              </View>
+            </View>
+            <View style={{ paddingHorizontal: 20,marginTop:20,backgroundColor:theme.colors.primary }}>
+              <View>
+                <View style={styles.containerCenterd}>
+                  <Text style={styles.leftText}>Popular Product </Text>
+                  <View style={styles.rightText}>
+                    <CustomButton onPress={handleButtonPress} title="See All" />
+                  </View>
+                </View>
+                <FlatList
+                  data={data}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.id.toString()}
+                  horizontal
+                />
+              </View>
+            </View>
+
+          </View>
+          <View style={styles.container}>
+            {/* <Text style={styles.example}>Floating Action example</Text> */}
+            <FloatingAction
+              actions={actions}
+              visible={true}
+              showBackground={true}
+              overlayColor='rgba(51, 144, 124, 0.1)'
+              color={theme.colors.primary}
+              onPressItem={name => {
+                // console.log(`selected button: ${name}`);
+                name == 'categoryBtn' ? '' : '';
+                name == 'productBtn' ? navigation.navigate('AddProduct') : '';
+              }}
             />
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </>
   )

@@ -15,15 +15,16 @@ import PhoneVerify from '../screens/PhoneVerify/phoneVerify.screen'
 import OtpVerify from '../screens/OtpVerify/OtpVerify.screen'
 import MainHeader from '../components/mainHeader'
 import { theme } from '../core/theme'
+import AddProduct from '../screens/Product/addProduct'
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
 function AuthTabs() {
   return (
     <Tab.Navigator
-    screenOptions={{
-      header: (props) => (<MainHeader title={"Products"} />)
-    }}>
+      screenOptions={{
+        header: (props) => (<MainHeader title={"Products"} />)
+      }}>
       <Tab.Screen
         name="Home"
         component={Home}
@@ -34,6 +35,7 @@ function AuthTabs() {
           }
         }}
       />
+
       <Tab.Screen
         name="Browse"
         component={Profile}
@@ -44,7 +46,7 @@ function AuthTabs() {
           }
         }}
       />
-       <Tab.Screen
+      <Tab.Screen
         name="Product"
         component={Profile}
         options={{
@@ -54,7 +56,7 @@ function AuthTabs() {
           }
         }}
       />
-       <Tab.Screen
+      <Tab.Screen
         name="Order History"
         component={Profile}
         options={{
@@ -64,7 +66,7 @@ function AuthTabs() {
           }
         }}
       />
-       <Tab.Screen
+      <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
@@ -81,9 +83,9 @@ function AuthTabs() {
 function simplePage() {
   return (
     <Stack.Navigator
-    screenOptions={{
-      header: (props) => (<Header {...props} />)
-    }}>
+      screenOptions={{
+        header: (props) => (<Header {...props} />)
+      }}>
       {/* {props.introScreen?.isVisible == undefined ? ( */}
       {/* <Stack.Screen name="IntroScreen" component={introScreen} /> */}
       {/* ) : null}  */}
@@ -138,7 +140,7 @@ function simplePage() {
           }
         }}
       />
-     
+
       {/* <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="TermsOfUSe" component={TermsOfUSe}  options={{back:true}}/> */}
     </Stack.Navigator>
@@ -159,7 +161,21 @@ const MainNavigation = () => {
           options={{ headerShown: false }}
           component={AuthTabs}
         />
-        {/* add your another screen here using -> Stack.Screen */}
+        <Stack.Screen
+          name="AddProduct"
+          component={AddProduct}
+          options={{
+            headerShown: true,
+            title: 'Add Product',
+            headerStyle: {
+              backgroundColor: theme.colors.primary,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )
