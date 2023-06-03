@@ -69,17 +69,14 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  circle: {
-    width: 35,
-    height: 35,
-    borderRadius: 25,
-    backgroundColor: '#33907C',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   letter: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#FFFFFF',
   },
+  viewheight:{
+    height:220
+  }
+
+
 })

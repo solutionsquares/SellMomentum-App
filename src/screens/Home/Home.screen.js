@@ -69,7 +69,7 @@ const Home = ({ navigation }) => {
   ];
   useEffect(() => {
     // getData()
-    fetchProducts(user.user._id)
+    fetchProducts(user?.user._id)
   }, [])
 
   async function fetchProducts(id) {
@@ -102,12 +102,12 @@ const Home = ({ navigation }) => {
     <View style={styles.cardContainer} >
       <Image source={item.image} style={styles.image} />
       <View style={styles.content}>
-        <Text style={{ color: 'red' }}>{item.title}</Text>
+        <Text style={theme.productLabelColor}>{item.title}</Text>
       </View>
-      <View style={{ padding: 10, }}>
+      <View style={theme.padding10}>
         <View style={[styles.containerCenterd,]}>
           <View style={[styles.leftText]}>
-            <View style={styles.circle}>
+            <View style={theme.smallCircle}>
               <Text style={styles.letter}>T</Text>
             </View>
           </View>
@@ -119,8 +119,33 @@ const Home = ({ navigation }) => {
           </View>
         </View>
       </View>
+    </View>
+  );
+
+  const renderItemStoreItems = ({ item }) => (
+    // <TouchableOpacity style={styles.cardContainer} >
+    <View style={styles.cardContainer} >
+      <Image source={item.image} style={styles.image} />
+      <View style={theme.centerCss}>
+        <View style={[theme.bigCircle, { marginTop: -30 }]}>
+          <Text style={[theme.fontSize20, theme.whiteColor]}>T</Text>
+        </View>
+      </View>
+      <View style={[styles.containerCenterd, theme.centerCss, theme.paddingTop20]}>
+        <Text>Tradly</Text>
+      </View>
+      <View style={[theme.marginLeft30, theme.marginRight30]}>
+        <CustomButton
+          title="Submit"
+          onPress={handleButtonPress}
+          width={110}
+          backgroundColor={true}
+          textColor={true}
+        />
+      </View>
 
     </View>
+
   );
 
   return (
@@ -133,7 +158,7 @@ const Home = ({ navigation }) => {
             <SearchInput />
             <SagmentView sagmentData={sagmentData} />
 
-            <View style={{ paddingHorizontal: 20 }}>
+            <View style={[theme.paddingHorizontal20]}>
               <View>
                 <CategoryComponent data={categories} ></CategoryComponent>
               </View>
@@ -141,7 +166,13 @@ const Home = ({ navigation }) => {
                 <View style={styles.containerCenterd}>
                   <Text style={styles.leftText}>New Product </Text>
                   <View style={styles.rightText}>
-                    <CustomButton onPress={handleButtonPress} title="See All" />
+                    <CustomButton
+                      onPress={handleButtonPress}
+                      title="See All"
+                      width={110}
+                      backgroundColor={true}
+                      textColor={true}
+                    />
                   </View>
                 </View>
                 <FlatList
@@ -153,12 +184,18 @@ const Home = ({ navigation }) => {
               </View>
             </View>
 
-            <View style={{ paddingHorizontal: 20 }}>
+            <View style={theme.paddingHorizontal20}>
               <View>
                 <View style={styles.containerCenterd}>
                   <Text style={styles.leftText}>Popular Product </Text>
                   <View style={styles.rightText}>
-                    <CustomButton onPress={handleButtonPress} title="See All" />
+                    <CustomButton
+                      onPress={handleButtonPress}
+                      title="See All"
+                      width={110}
+                      backgroundColor={true}
+                      textColor={true}
+                    />
                   </View>
                 </View>
                 <FlatList
@@ -169,40 +206,43 @@ const Home = ({ navigation }) => {
                 />
               </View>
             </View>
-            <View style={{ paddingHorizontal: 20,marginTop:20,backgroundColor:theme.colors.primary }}>
-              <View>
-                <View style={styles.containerCenterd}>
-                  <Text style={styles.leftText}>Popular Product </Text>
-                  <View style={styles.rightText}>
-                    <CustomButton onPress={handleButtonPress} title="See All" />
-                  </View>
+            <View style={[theme.paddingHorizontal20,styles.viewheight,theme.marginTop20,{backgroundColor: theme.colors.primary, }]}>
+              <View style={[styles.containerCenterd, theme.paddingTop10]}>
+                <Text style={styles.leftText}>Store to follow</Text>
+                <View style={styles.rightText}>
+                  <CustomButton
+                    onPress={handleButtonPress}
+                    title="View All"
+                    width={110}
+                    backgroundColor={false}
+                    textColor={false} />
                 </View>
-                <FlatList
-                  data={data}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item.id.toString()}
-                  horizontal
-                />
               </View>
             </View>
-
-          </View>
-          <View style={styles.container}>
-            {/* <Text style={styles.example}>Floating Action example</Text> */}
-            <FloatingAction
-              actions={actions}
-              visible={true}
-              showBackground={true}
-              overlayColor='rgba(51, 144, 124, 0.1)'
-              color={theme.colors.primary}
-              onPressItem={name => {
-                // console.log(`selected button: ${name}`);
-                name == 'categoryBtn' ? '' : '';
-                name == 'productBtn' ? navigation.navigate('AddProduct') : '';
-              }}
-            />
+            <View style={[theme.paddingHorizontal20,{marginTop: -150, }]}>
+              <FlatList
+                data={data}
+                renderItem={renderItemStoreItems}
+                keyExtractor={(item) => item.id.toString()}
+                horizontal
+              />
+            </View>
           </View>
         </ScrollView>
+        <View style={styles.container}>
+          <FloatingAction
+            actions={actions}
+            visible={true}
+            showBackground={true}
+            overlayColor='rgba(51, 144, 124, 0.1)'
+            color={theme.colors.primary}
+            onPressItem={name => {
+              // console.log(`selected button: ${name}`);
+              name == 'categoryBtn' ? '' : '';
+              name == 'productBtn' ? navigation.navigate('AddProduct') : '';
+            }}
+          />
+        </View>
       </SafeAreaView>
     </>
   )

@@ -47,7 +47,7 @@ export const theme = {
   },
   centerCss:{
     alignItems:"center",
-    justifyContent:"center"
+    justifyContent:"center",
   },
   rowView:{
     flexDirection: "row"
@@ -64,5 +64,56 @@ export const theme = {
   horizontal10Padding:{
     paddingHorizontal: 10,
   },
+  smallCircle: {
+    width: 35,
+    height: 35,
+    borderRadius: 25,
+    backgroundColor: '#33907C',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bigCircle: {
+    width: 50,
+    height: 50,
+    borderRadius: 40,
+    backgroundColor: '#33907C',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  fontSize20:{
+    fontSize:20
+  },
+  whiteColor:{
+    color:'#fff'
+  },
+  // Margin 
+  marginLeft30:{
+    marginLeft:30
+  },
+  marginRight30:{
+    marginRight:30
+  },
+  marginTop20:{
+    marginTop:20
+  },
+
+  // Padding 
+  padding10:{
+    padding:10
+  },
+  paddingTop10:{
+    paddingTop:10
+  },
+  paddingHorizontal20:{
+    paddingHorizontal:20
+  },
+  paddingTop20:{
+    paddingTop:20
+  },
+  productLabelColor:{
+    color:'#333'
+  }
+  
+
   
 }
