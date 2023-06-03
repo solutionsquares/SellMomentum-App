@@ -95,10 +95,13 @@ const Home = ({ navigation }) => {
     console.log('Button pressed!');
     // Handle button press here
   };
-
+  const gotoProductDetail = (params)=> {
+    navigation.navigate('ProductDetail')
+    
+  }
 
   const renderItem = ({ item }) => (
-    // <TouchableOpacity style={styles.cardContainer} >
+    <TouchableOpacity  onPress={()=>gotoProductDetail()}>
     <View style={styles.cardContainer} >
       <Image source={item.image} style={styles.image} />
       <View style={styles.content}>
@@ -120,6 +123,7 @@ const Home = ({ navigation }) => {
         </View>
       </View>
     </View>
+    </TouchableOpacity>
   );
 
   const renderItemStoreItems = ({ item }) => (

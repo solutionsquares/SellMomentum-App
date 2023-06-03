@@ -16,6 +16,7 @@ import OtpVerify from '../screens/OtpVerify/OtpVerify.screen'
 import MainHeader from '../components/mainHeader'
 import { theme } from '../core/theme'
 import AddProduct from '../screens/Product/addProduct'
+import ProductDetail from '../screens/Product/productDetail'
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
@@ -151,11 +152,11 @@ const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="WithoutAuth"
           options={{ headerShown: false }}
           component={simplePage}
-        />
+        /> */}
         <Stack.Screen
           name="HomeBase"
           options={{ headerShown: false }}
@@ -167,6 +168,20 @@ const MainNavigation = () => {
           options={{
             headerShown: true,
             title: 'Add Product',
+            headerStyle: {
+              backgroundColor: theme.colors.primary,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="ProductDetail"
+          component={ProductDetail}
+          options={{
+            headerShown: true,
             headerStyle: {
               backgroundColor: theme.colors.primary,
             },

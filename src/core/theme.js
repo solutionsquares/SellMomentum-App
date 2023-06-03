@@ -112,8 +112,28 @@ export const theme = {
   },
   productLabelColor:{
     color:'#333'
-  }
+  },
   
+  //card
+  containerCenterd: {
+    paddingVertical:5,
+    padding:10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor:'#ffff'
+  },
+  leftText: {
+    color:'black',
+    marginStart:10,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  rightText: {
+    marginLeft: 'auto',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 
   
 }
