@@ -212,7 +212,7 @@ const Home = ({ navigation }) => {
             </View>
             <View style={[theme.paddingHorizontal20,styles.viewheight,theme.marginTop20,{backgroundColor: theme.colors.primary, }]}>
               <View style={[styles.containerCenterd, theme.paddingTop10]}>
-                <Text style={styles.leftText}>Store to follow</Text>
+                <Text style={[styles.leftText,theme.whiteColor]}>Store to follow</Text>
                 <View style={styles.rightText}>
                   <CustomButton
                     onPress={handleButtonPress}
