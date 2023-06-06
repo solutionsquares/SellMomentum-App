@@ -98,6 +98,9 @@ export const theme = {
   },
 
   // Padding 
+  padding5:{
+    padding:5
+  },
   padding10:{
     padding:10
   },

@@ -3,7 +3,13 @@ import { theme } from '../core/theme'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Badge from '@nghinv/react-native-badge';
-const MainHeader = ({ navigation, title }) => {
+const MainHeader = ({ title }) => {
+  
+  const { navigate } = this.props?.navigation ?  this.props?.navigation:"";
+
+  const gotoCart = (params)=> {
+    navigation.navigate('CartComponents')  
+}
   return (
     <View style={styles.headerBox}>
       <Text style={[styles.header]} >{title}</Text>
@@ -17,7 +23,9 @@ const MainHeader = ({ navigation, title }) => {
               size={13}
               labelFormatterLimit={2}
             />
-            <Entypo name="shopping-cart" size={20} style={[styles.iconCss]} color={theme.colors.white} />
+            <Entypo name="shopping-cart" size={20} style={[styles.iconCss]} color={theme.colors.white} 
+             onPress={() => navigate('CartComponents')}
+             />
             </View>
         </View>
         {/* <AntDesign name="shopping-cart" size={20} color={theme.colors.primary} style={{ marginRight: 10 }}/> */}

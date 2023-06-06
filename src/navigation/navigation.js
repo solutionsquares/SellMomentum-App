@@ -17,6 +17,8 @@ import MainHeader from '../components/mainHeader'
 import { theme } from '../core/theme'
 import AddProduct from '../screens/Product/addProduct'
 import ProductDetail from '../screens/Product/productDetail'
+import WishList from '../screens/WishList/wishList'
+import CartComponent from '../screens/Cart/cart'
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
@@ -180,6 +182,34 @@ const MainNavigation = () => {
         <Stack.Screen
           name="ProductDetail"
           component={ProductDetail}
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: theme.colors.primary,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Wishlist"
+          component={WishList}
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: theme.colors.primary,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="CartComponents"
+          component={CartComponent}
           options={{
             headerShown: true,
             headerStyle: {
