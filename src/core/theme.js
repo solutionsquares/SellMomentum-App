@@ -123,6 +123,15 @@ export const theme = {
     alignItems: 'center',
     backgroundColor:'#ffff'
   },
+  containerCenterdColumn: {
+    paddingVertical:5,
+    padding:10,
+    flexDirection: 'column',
+    justifyContent:'flex-start',
+    alignItems: 'flex-start',
+    backgroundColor:'#ffff',
+    marginBottom:5
+  },
   leftText: {
     color:'black',
     marginStart:10,

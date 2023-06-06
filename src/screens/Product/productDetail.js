@@ -15,12 +15,13 @@ import { theme } from '../../core/theme'
 import Swiper from 'react-native-swiper'
 import CustomButton from '../../components/buttonComponents/buttonComponents'
 import { ScrollView } from 'react-native-gesture-handler'
+import { height } from 'deprecated-react-native-prop-types/DeprecatedImagePropType'
 const ProductDetail = ({ navigation }) => {
     const data = [
-        { id: 1, title: 'Product 1', price: '$10', image: require('../../assets/icons/Group6.png') },
-        { id: 2, title: 'Product 2', price: '$20', image: require('../../assets/icons/Group6.png') },
-        { id: 3, title: 'Product 3', price: '$30', image: require('../../assets/icons/Group6.png') },
-        { id: 4, title: 'Product 3', price: '$30', image: require('../../assets/icons/Group6.png') },
+        { id: 1, title: 'Product 1', price: '$10', image: require('../../assets/icons/products1.webp') },
+        { id: 2, title: 'Product 2', price: '$20', image: require('../../assets/icons/products2.webp') },
+        { id: 3, title: 'Product 3', price: '$30', image: require('../../assets/icons/products3.webp') },
+        // { id: 4, title: 'Product 3', price: '$30', image: require('../../assets/icons/products1.webp') },
         // Add more data objects as needed
     ];
     useEffect(() => {
@@ -37,8 +38,7 @@ const ProductDetail = ({ navigation }) => {
             <ScrollView>
                 <View style={styles.container}>
                     <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
-                    <Swiper style={styles.wrapper}
-
+                    <Swiper style={[styles.wrapper,{height:250}]}
                         activeDot={
                             <View
                                 style={{
@@ -51,19 +51,31 @@ const ProductDetail = ({ navigation }) => {
                                 }}
                             />
                         }
-                        paginationStyle={{
-                            height: '100%',
-                        }}>
+                        // paginationStyle={{
+                        //     height: '100%',
+                        // }}
+                        >
                         {data.map((item, key) => {
                             return (
-                                <View key={key} style={item.css}>
+                                <View key={key} style={[item.css]}>
                                     <Image style={styles.image} source={item.image} ></Image>
                                 </View>
                             )
                         })}
 
                     </Swiper>
-                    <View style={theme.containerCenterd}>
+                    <View style={[theme.containerCenterdColumn,]}>
+                        <View style={{padding:5}}>
+                            <Text style={{fontSize:18,fontWeight:'bold',color:'#000'}}>Tradly Store </Text>
+                        </View>
+                        <View style={{padding:5,flexDirection: 'row',}}>
+                            <Text style={[styles.discountedPrice]}>$25 </Text>
+                            <Text style={[styles.originalPrice,styles.originalPriceText]}>$50</Text>
+                            <Text style={[styles.originalPriceText]}>50% off</Text>
+                        </View>
+                        
+                    </View>
+                    <View style={[theme.containerCenterd,]}>
                         <View style={theme.smallCircle}>
                             <Text style={styles.letter}>T</Text>
                         </View>
@@ -136,16 +148,35 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     wrapper: {
-        // bottom:50
-        height: '60%'
+        bottom:5,
+        top:2
+
     },
+    discountedPrice: {
+        fontSize: 20,
+        color: 'green',
+        fontWeight: 'bold',
+    },
+    originalPrice: {
+        textDecorationLine: 'line-through',
+        fontSize: 16,
+        marginBottom: 5,
+        color:theme.gray
+     },
+     originalPriceText:{
+        marginTop:5,
+        marginLeft:8,
+        fontSize: 16,
+     },
     letter: {
         fontSize: 16,
         fontWeight: 'bold',
         color: '#FFFFFF',
     },
     image: {
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        height:'100%',
+        width:'100%',
     },
     description: {
         marginTop: 10,
