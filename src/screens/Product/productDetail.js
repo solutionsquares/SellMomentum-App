@@ -69,7 +69,7 @@ const ProductDetail = ({ navigation }) => {
                             <Text style={{fontSize:18,fontWeight:'bold',color:'#000'}}>Tradly Store </Text>
                         </View>
                         <View style={{padding:5,flexDirection: 'row',}}>
-                            <Text style={[styles.discountedPrice]}>$25 </Text>
+                            <Text style={[styles.discountedPrice,styles]}>$25 </Text>
                             <Text style={[styles.originalPrice,styles.originalPriceText]}>$50</Text>
                             <Text style={[styles.originalPriceText]}>50% off</Text>
                         </View>
@@ -154,8 +154,8 @@ const styles = StyleSheet.create({
     },
     discountedPrice: {
         fontSize: 20,
-        color: 'green',
         fontWeight: 'bold',
+        color:theme.colors.primary
     },
     originalPrice: {
         textDecorationLine: 'line-through',
