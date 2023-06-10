@@ -154,11 +154,11 @@ const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="WithoutAuth"
           options={{ headerShown: false }}
           component={simplePage}
-        /> */}
+        />
         <Stack.Screen
           name="HomeBase"
           options={{ headerShown: false }}
