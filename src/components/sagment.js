@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, FlatList,Dimensions,View } from 'react-native'
-import { theme } from '../core/theme'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+const theme = require('../core/theme');
 const windowWidth = Dimensions.get('window').width;
 const SagmentView = ({ navigation,sagmentData }) => {
   const [sagmentDataNew,setSagmentData] = useState(sagmentData)
   const renderItem = ({ item }) => {
     return (
-      <View style={[styles.item,{width:(windowWidth/sagmentDataNew.length)-21}]}>
+      <View style={[styles.item,theme.garyBorderColor,{width:(windowWidth/sagmentDataNew.length)-21,backgroundColor:'red'}]}>
         {/* Render your item content */}
         <View style={[theme.rowView,theme.horizontal10Padding,styles.centerBox]}>
-        <FontAwesome name={item.icon} color={theme.colors.white} size={15} style={{paddingHorizontal:5}} /> 
-        <Text style={styles.tagText}>{item.name}</Text>
+        <FontAwesome name={item.icon} size={15} style={[theme.whiteColor,{paddingHorizontal:5}]} /> 
+        <Text style={[theme.whiteColor]}>{item.name}</Text>
         </View>
       </View>
     );
   };
   return (
-    <View style={styles.header}>
+    <View style={[styles.header,theme.backgroundColor]}>
       <FlatList
         data={sagmentDataNew}
         renderItem={renderItem}
@@ -32,7 +32,6 @@ const SagmentView = ({ navigation,sagmentData }) => {
 const styles = StyleSheet.create({
   header: {
     fontSize: 21,
-    backgroundColor: theme.colors.primary,
     fontWeight: 'bold',
     paddingHorizontal: 20,    
   },
@@ -47,14 +46,12 @@ const styles = StyleSheet.create({
   item: {
     marginRight: 10,
     borderWidth:1,
-    borderColor:theme.colors.gray,
     padding:8,
     marginBottom:13,
     borderRadius:25,
     alignItems:"center"
   },
   tagText:{
-    color:theme.colors.white
   },
   centerBox:{
     alignItems:"center"

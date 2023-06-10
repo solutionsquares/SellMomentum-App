@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
-import { theme } from '../core/theme'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Badge from '@nghinv/react-native-badge';
+const global = require('../core/theme');
 const MainHeader = ({ title }) => {
   
   const { navigate } = this.props?.navigation ?  this.props?.navigation:"";
@@ -12,32 +12,29 @@ const MainHeader = ({ title }) => {
 }
   return (
     <View style={styles.headerBox}>
-      <Text style={[styles.header]} >{title}</Text>
-      <View style={[styles.header, styles.textAlignCss]}>
+      <Text style={[styles.header,global.primaryBGColor,global.whiteColor]} >{title}</Text>
+      <View style={[styles.header, styles.textAlignCss,global.primaryBGColor,]}>
         <View style={[styles.headerBox]}>
-          <AntDesign name="heart" size={20} style={[styles.iconCss]} color={theme.colors.white} />
+          <AntDesign name="heart" size={20} style={[styles.iconCss,global.whiteColor]}/>
             <View>
             <Badge
-              backgroundColor={theme.colors.error}
               containerStyle={styles.badgeCss}
               size={13}
               labelFormatterLimit={2}
+              style={[global.errorBGColor]}
             />
-            <Entypo name="shopping-cart" size={20} style={[styles.iconCss]} color={theme.colors.white} 
+            <Entypo name="shopping-cart" size={20} style={[styles.iconCss,global.whiteColor]} 
              onPress={() => navigate('CartComponents')}
              />
             </View>
         </View>
-        {/* <AntDesign name="shopping-cart" size={20} color={theme.colors.primary} style={{ marginRight: 10 }}/> */}
       </View>
     </View>
   )
 }
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: theme.colors.primary,
     fontSize: 21,
-    color: theme.colors.white,
     fontWeight: 'bold',
     paddingVertical: 12,
     padding: 20,

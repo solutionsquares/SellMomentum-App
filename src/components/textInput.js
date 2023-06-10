@@ -1,20 +1,20 @@
 import React from 'react'
 import { View, StyleSheet, Text, TextInput } from 'react-native'
-import { theme } from '../core/theme'
+const theme = require('../core/theme');
 
 export default function Input({ errorText, description, ...props }) {
   return (
     <View style={styles.container}>
       <TextInput
-        style={styles.input}
-        selectionColor={theme.colors.primary}
+        style={[styles.input,theme.surfaceBGColor]}
+        selectionColor={'#33907C'}
         {...props}
         placeholder={props.label}
       />
       {description && !errorText ? (
-        <Text style={styles.description}>{description}</Text>
+        <Text style={[styles.description,theme.secondaryColor]}>{description}</Text>
       ) : null}
-      {errorText ? <Text style={styles.error}>{errorText}</Text> : null}
+      {errorText ? <Text style={[styles.error,theme.errorColor]}>{errorText}</Text> : null}
     </View>
   )
 }
@@ -24,17 +24,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   input: {
-    backgroundColor: theme.colors.surface,
     borderRadius:5,
   },
   description: {
     fontSize: 13,
-    color: theme.colors.secondary,
     // paddingTop: 8,
   },
   error: {
     fontSize: 13,
-    color: theme.colors.error,
     // paddingTop: 8,
   },
 })

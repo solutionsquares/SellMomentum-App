@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions,StatusBar } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchUser, selectAll } from '../../stores/user.reducer'
-import BackButton from '../../components/backButton'
-import Input from '../../components/textInput'
-import Header from '../../components/header'
-import { theme } from '../../core/theme'
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
-import { DialogMsgClose, DialogMsg, ToastMsg, ToastMsgClose } from '../../utils/notification'
 
 import Swiper from 'react-native-swiper'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AsyncStorageGetData } from '../../utils/asyncStorageUtil';
-import { constant } from '../../constant/constant';
+const theme = require('../../core/theme');
 const IntroScreen = ({ navigation }) => {
     const [isLandscape, setIsLandscape] = useState(false);
     const user = useSelector(state => state?.user?.entities?.undefined)
@@ -35,33 +25,33 @@ const IntroScreen = ({ navigation }) => {
         Dimensions.addEventListener('change', updateOrientation);
         
         return () => {
-            Dimensions.removeEventListener('change', updateOrientation);
+            Dimensions?.removeEventListener('change', updateOrientation);
         };
     }, []);
    
 
     return (
         <View style={styles.container}>
-            <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
-            <View style={styles.topHalf} />
-            <View style={styles.bottomHalf} />
-            <View style={[styles.overlay, isLandscape && styles.landscapeOverlay]}>
+            <StatusBar barStyle="light-content" style={[theme.primaryBGColor]} />
+            <View style={[styles.topHalf,theme.primaryBGColor]} />
+            <View style={[styles.bottomHalf,theme.whiteBGColor]} />
+            <View style={[styles.overlay, theme.whiteBGColor,isLandscape && styles.landscapeOverlay]}>
                 <Swiper style={styles.wrapper} >
                     <View style={[styles.slider, styles.overlayContent]}>
                         <Image source={require('../../assets/icons/Group6.png')} />
-                        <Text style={styles.description}>Empowering Artisans, Farmers & Micro Business</Text>
+                        <Text style={[styles.description,theme.primaryColor]}>Empowering Artisans, Farmers & Micro Business</Text>
                     </View>
                     <View style={[styles.slider, styles.overlayContent]}>
                         <Image source={require('../../assets/icons/Group6.png')} />
-                        <Text style={styles.description}>Empowering Artisans, Farmers & Micro Business</Text>
+                        <Text style={[styles.description,theme.primaryColor]}>Empowering Artisans, Farmers & Micro Business</Text>
 
                     </View>
                     <View style={[styles.slider, styles.overlayContent]}>
                         <Image source={require('../../assets/icons/Group6.png')} />
-                        <Text style={styles.description}>Empowering Artisans, Farmers & Micro Business</Text>
+                        <Text style={[styles.description,theme.primaryColor]}>Empowering Artisans, Farmers & Micro Business</Text>
                     </View>
                 </Swiper>
-                <TouchableOpacity style={styles.nextButton} onPress={()=>navigation.replace('WithoutAuth', { screen: 'Login' })}>
+                <TouchableOpacity style={[styles.nextButton,theme.primaryBGColor]} onPress={()=>navigation.replace('WithoutAuth', { screen: 'Login' })}>
                     <Text style={styles.buttonText}>Next</Text>
                 </TouchableOpacity>
             </View >
@@ -75,11 +65,11 @@ const styles = StyleSheet.create({
     },
     topHalf: {
         flex: 1,
-        backgroundColor: theme.colors.primary, // Replace with your desired color
+        // backgroundColor: theme.colors.primary, // Replace with your desired color
     },
     bottomHalf: {
         flex: 1,
-        backgroundColor: theme.colors.white, // Replace with your desired color
+        // backgroundColor: theme.colors.white, // Replace with your desired color
     },
     overlay: {
         position: 'absolute',
@@ -89,7 +79,7 @@ const styles = StyleSheet.create({
         top: '25%',
         width: '85%',
         height: '65%',
-        backgroundColor: theme.colors.white,
+        // backgroundColor: theme.colors.white,
         borderRadius: 8
     },
     landscapeOverlay: {
@@ -101,7 +91,7 @@ const styles = StyleSheet.create({
 
     },
     description: {
-        color: theme.colors.primary,
+        // color: theme.colors.primary,
         fontSize: 20,
         marginBottom: 20,
         fontFamily: 'Montserrat',
@@ -109,7 +99,7 @@ const styles = StyleSheet.create({
         alignItems:"flex-end"
     },
     nextButton: {
-        backgroundColor: theme.colors.primary,
+        // backgroundColor: theme.colors.primary,
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,

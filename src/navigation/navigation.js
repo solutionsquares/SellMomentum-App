@@ -14,13 +14,13 @@ import Signup from '../screens/Signup/signup.screen'
 import PhoneVerify from '../screens/PhoneVerify/phoneVerify.screen'
 import OtpVerify from '../screens/OtpVerify/OtpVerify.screen'
 import MainHeader from '../components/mainHeader'
-import { theme } from '../core/theme'
 import AddProduct from '../screens/Product/addProduct'
 import ProductDetail from '../screens/Product/productDetail'
 import WishList from '../screens/WishList/wishList'
 import CartComponent from '../screens/Cart/cart'
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
+const theme = require('../core/theme');
 
 function AuthTabs() {
   return (
@@ -45,7 +45,7 @@ function AuthTabs() {
         options={{
           // headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            return <FontAwesome name={'search'} size={20} color={focused ? theme.colors.primary : theme.colors.gray} />
+            return <FontAwesome name={'search'} size={20} style={[focused ? theme.primaryColor : theme.grayColor]}/>
           }
         }}
       />
@@ -55,7 +55,7 @@ function AuthTabs() {
         options={{
           // headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            return <FontAwesome5 name={'store'} size={20} color={focused ? theme.colors.primary : theme.colors.gray} />
+            return <FontAwesome5 name={'store'} size={20} style={[focused ? theme.primaryColor : theme.grayColor]} />
           }
         }}
       />
@@ -65,7 +65,7 @@ function AuthTabs() {
         options={{
           // headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            return <Entypo name={'text-document-inverted'} size={20} color={focused ? theme.colors.primary : theme.colors.gray} />
+            return <Entypo name={'text-document-inverted'} size={20} style={[focused ? theme.primaryColor : theme.grayColor]} />
           }
         }}
       />
@@ -75,7 +75,7 @@ function AuthTabs() {
         options={{
           // headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            return <FontAwesome5 name={'user-alt'} size={20} color={focused ? theme.colors.primary : theme.colors.gray} />
+            return <FontAwesome5 name={'user-alt'} size={20} style={[focused ? theme.primaryColor : theme.grayColor]} />
           }
         }}
       />
@@ -171,7 +171,7 @@ const MainNavigation = () => {
             headerShown: true,
             title: 'Add Product',
             headerStyle: {
-              backgroundColor: theme.colors.primary,
+              backgroundColor:'#33907C'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -185,7 +185,7 @@ const MainNavigation = () => {
           options={{
             headerShown: true,
             headerStyle: {
-              backgroundColor: theme.colors.primary,
+              backgroundColor:'#33907C'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -199,7 +199,7 @@ const MainNavigation = () => {
           options={{
             headerShown: true,
             headerStyle: {
-              backgroundColor: theme.colors.primary,
+              backgroundColor:'#33907C'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -213,7 +213,7 @@ const MainNavigation = () => {
           options={{
             headerShown: true,
             headerStyle: {
-              backgroundColor: theme.colors.primary,
+              backgroundColor:'#33907C'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {

@@ -8,12 +8,9 @@ import {
   Alert
 } from 'react-native'
 import styles from '../Home/Home.style'
-import Icon from 'react-native-vector-icons/Ionicons'
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import { DialogMsgClose, DialogMsg, ToastMsg, ToastMsgClose} from '../../utils/notification'
 import { constant } from '../../constant/constant';
-import Header from '../../components/header';
-import { theme } from '../../core/theme';
+const theme = require('../../core/theme');
 const Home = ({ navigation }) => {
   function logout(){
     DialogMsg(constant.errorActionTypes.success,'Logout','Congrats! this is dialog box success')
@@ -24,7 +21,7 @@ const Home = ({ navigation }) => {
   }
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
+      <StatusBar barStyle="light-content" style={[theme.primaryBGColor]} />
       <SafeAreaView style={styles.SafeAreaView1} />
       <SafeAreaView style={styles.SafeAreaView2}>
         <View style={styles.outerWrapper}>

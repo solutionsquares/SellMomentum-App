@@ -14,10 +14,10 @@ import { fetchUser, selectAll } from '../../stores/user.reducer'
 import BackButton from '../../components/backButton'
 import Input from '../../components/textInput'
 import Header from '../../components/header'
-import { theme } from '../../core/theme'
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import { DialogMsgClose, DialogMsg, ToastMsg, ToastMsgClose } from '../../utils/notification'
 import { constant } from '../../constant/constant'
+const theme = require('../../core/theme');
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
@@ -37,7 +37,9 @@ const Login = ({ navigation }) => {
     //   routes: [{ name: 'Dashboard' }],
     // })
   }
-
+  function SignUpScreen(){
+    navigation.replace('Signup', { screen: 'Signup' })
+  }
   async function LoginFun() {
     console.log(email)
     console.log(password)
@@ -74,8 +76,8 @@ const Login = ({ navigation }) => {
   return (
     <>
 
-      <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
+      <View style={[styles.container,theme.primaryBGColor]}>
+        <StatusBar barStyle="light-content" style={[theme.primaryBGColor]}/>
         <View style={styles.topBox}>
           <View>
             <Text style={[theme.whiteTitle, styles.allMargen]}>Welcome to tradly</Text>
@@ -97,7 +99,8 @@ const Login = ({ navigation }) => {
             textContentType="email"
             keyboardType={'email'}
             maxLength={100}
-            placeholderTextColor={theme.colors.white}
+            // placeholderTextColor={theme.colors.white}
+            placeholderTextColor={'#fff'}
             selectionColor="#fff"
             style={theme.input}
           />
@@ -113,7 +116,8 @@ const Login = ({ navigation }) => {
             textContentType="text"
             keyboardType={'text'}
             maxLength={100}
-            placeholderTextColor={theme.colors.white}
+            placeholderTextColor={'#fff'}
+            // placeholderTextColor={theme.colors.white}
             selectionColor="#fff"
             style={theme.input}
             secureTextEntry
@@ -126,9 +130,9 @@ const Login = ({ navigation }) => {
             secureTextEntry
           /> */}
           <TouchableOpacity onPress={() => LoginFun()}>
-            <View style={styles.nextButton}>
+            <View style={[styles.nextButton,theme.whiteBGColor]}>
 
-              <Text style={styles.buttonText}>Login</Text>
+              <Text style={[styles.buttonText,theme.primaryColor]}>Login</Text>
 
             </View>
           </TouchableOpacity>
@@ -139,7 +143,7 @@ const Login = ({ navigation }) => {
             <View>
               <Text style={[theme.whiteText, styles.allMargen]}>Don’t have an account? </Text>
             </View>
-            <TouchableOpacity onPress={() => SignUpPage()}>
+            <TouchableOpacity onPress={() => SignUpScreen()}>
               <View>
                 <Text style={[theme.whiteText, styles.allMargen, styles.boldText]}>Sign up</Text>
               </View>
@@ -155,7 +159,6 @@ const Login = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.primary,
     justifyContent: "center",
     padding: 20
   },
@@ -163,7 +166,6 @@ const styles = StyleSheet.create({
     fontWeight: "900"
   },
   nextButton: {
-    backgroundColor: theme.colors.white,
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 25,
@@ -171,7 +173,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonText: {
-    color: theme.colors.primary,
   },
   allMargen: {
     margin: 20

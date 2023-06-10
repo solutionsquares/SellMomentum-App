@@ -11,13 +11,13 @@ import {
     Image
 } from 'react-native'
 
-import { theme } from '../../core/theme'
 import Swiper from 'react-native-swiper'
 import CustomButton from '../../components/buttonComponents/buttonComponents'
 import { ScrollView } from 'react-native-gesture-handler'
 import { height } from 'deprecated-react-native-prop-types/DeprecatedImagePropType'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
+const theme = require('../../core/theme');
 
 const ProductDetail = ({ navigation }) => {
     const data = [
@@ -43,18 +43,17 @@ const ProductDetail = ({ navigation }) => {
         <>
             <ScrollView>
                 <View style={styles.container}>
-                    <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
+                    <StatusBar barStyle="light-content" style={[theme.primaryBGColor]} />
                     <Swiper style={[styles.wrapper, { height: 250, position: 'relative' }]}
                         activeDot={
                             <View
-                                style={{
-                                    backgroundColor: theme.colors.primary,
+                                style={[theme.primaryBGColor,{
                                     width: 13,
                                     height: 13,
                                     borderRadius: 7,
                                     marginLeft: 7,
                                     marginRight: 7
-                                }}
+                                }]}
                             />
                         }
                     // paginationStyle={{
@@ -75,9 +74,9 @@ const ProductDetail = ({ navigation }) => {
 
                     </Swiper>
                     <View style={[styles.wishlistIcon]}> 
-                                    <AntDesign name="sharealt" size={27} style={[styles.iconCss,theme.padding5]} color={theme.colors.primary} />
-                                    <AntDesign name="hearto" size={27} style={[styles.iconCss,theme.padding5 ]} color={theme.colors.primary} onPress={AddtoWishList} />
-                                    <Entypo name="dots-three-vertical" size={27} style={[styles.iconCss, theme.padding5]} color={theme.colors.primary} />
+                                    <AntDesign name="sharealt" size={27} style={[styles.iconCss,theme.padding5,theme.primaryColor]} />
+                                    <AntDesign name="hearto" size={27} style={[styles.iconCss,theme.padding5,theme.primaryColor]} onPress={AddtoWishList} />
+                                    <Entypo name="dots-three-vertical" size={27} style={[styles.iconCss, theme.padding5,theme.primaryColor]} />
 
                                     </View>
                     <View style={[theme.containerCenterdColumn,]}>
@@ -85,7 +84,7 @@ const ProductDetail = ({ navigation }) => {
                             <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000' }}>Tradly Store </Text>
                         </View>
                         <View style={[theme.padding5,{ flexDirection: 'row', }]}>
-                            <Text style={[styles.discountedPrice, styles]}>$25 </Text>
+                            <Text style={[styles.discountedPrice, theme.primaryColor]}>$25 </Text>
                             <Text style={[styles.originalPrice, styles.originalPriceText]}>$50</Text>
                             <Text style={[styles.originalPriceText]}>50% off</Text>
                         </View>
@@ -179,13 +178,11 @@ const styles = StyleSheet.create({
     discountedPrice: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: theme.colors.primary
     },
     originalPrice: {
         textDecorationLine: 'line-through',
         fontSize: 16,
         marginBottom: 5,
-        color: theme.gray
     },
     originalPriceText: {
         marginTop: 5,

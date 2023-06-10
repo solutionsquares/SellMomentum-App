@@ -1,17 +1,17 @@
 import { height, width } from 'deprecated-react-native-prop-types/DeprecatedImagePropType';
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { theme } from '../../core/theme';
+const theme = require('../../core/theme');
 
 const CustomButton = ({ title, onPress, width,height, backgroundColor, textColor ,fontSize}) => {
   const buttonStyles = [
     styles.button,
-    { width: width || 150, backgroundColor: backgroundColor ?  theme.colors.primary : theme.colors.white, height : height},
+    { width: width || 150, height : height},
   ];
-  const textStyles = [styles.text, { color: textColor ? theme.colors.white  :  theme.colors.primary , textAlign:'center',fontSize:fontSize }];
+  const textStyles = [styles.text, {textAlign:'center',fontSize:fontSize }];
   return (
-    <TouchableOpacity style={buttonStyles} onPress={onPress}>
-      <Text style={textStyles}>{title}</Text>
+    <TouchableOpacity style={[buttonStyles,backgroundColor ?  theme.primaryBGColor : theme.whiteBGColor]} onPress={onPress}>
+      <Text style={[textStyles,textColor ? theme.whiteColor  :  theme.primaryColor ,]}>{title}</Text>
     </TouchableOpacity>
 
   );

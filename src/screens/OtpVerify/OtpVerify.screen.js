@@ -14,10 +14,10 @@ import { fetchUser, selectAll } from '../../stores/user.reducer'
 import BackButton from '../../components/backButton'
 import Input from '../../components/textInput'
 import Header from '../../components/header'
-import { theme } from '../../core/theme'
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import { DialogMsgClose, DialogMsg, ToastMsg, ToastMsgClose } from '../../utils/notification'
 import { constant } from '../../constant/constant'
+const theme = require('../../core/theme');
 const OtpVerify = ({ navigation }) => {
   const ref_input1 = useRef();
   const ref_input2 = useRef();
@@ -109,7 +109,7 @@ const OtpVerify = ({ navigation }) => {
   return (
     <>
       <View style={theme.container}>
-        <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
+        <StatusBar barStyle="light-content" style={[theme.primaryBGColor]} />
         <View style={[theme.centerCss]}>
           <Text style={[theme.whiteTitle, styles.allMargen]}>Phone Verification</Text>
         </View>
@@ -123,8 +123,8 @@ const OtpVerify = ({ navigation }) => {
               key={index}
               value={otpCode[index]}
               keyboardType={'numeric'}
-              style={styles.otpCss}
-              selectionColor={theme.colors.white}
+              style={[styles.otpCss,theme.whiteColor,theme.whiteBorderBottomColor]}
+              selectionColor={'#fff'}
               onChangeText={onOtpChange(index)}
               autoFocus={index === 0 ? true : undefined}
               ref={refCallback(item)}
@@ -141,9 +141,9 @@ const OtpVerify = ({ navigation }) => {
           <Text style={[theme.whiteText, styles.allMargen]}>Resent new code</Text>
         </View>
         <TouchableOpacity onPress={()=>homePage()}>
-        <View style={styles.nextButton}>
+        <View style={[styles.nextButton,theme.whiteBGColor]}>
          
-            <Text style={styles.buttonText}>Next</Text>
+            <Text style={[styles.buttonText,theme.primaryColor]}>Next</Text>
           
         </View>
         </TouchableOpacity>
@@ -160,7 +160,6 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   nextButton: {
-    backgroundColor: theme.colors.white,
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 25,
@@ -168,16 +167,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonText: {
-    color: theme.colors.primary,
   },
   otpCss:{
     borderBottomWidth:1,
-    borderBottomColor:theme.colors.white,
     margin: 3,
     fontSize: 22,
     textAlign: "center",
     padding: 15,
-    color: theme.colors.white
   }
 
 })

@@ -14,10 +14,10 @@ import { fetchUser, selectAll } from '../../stores/user.reducer'
 import BackButton from '../../components/backButton'
 import Input from '../../components/textInput'
 import Header from '../../components/header'
-import { theme } from '../../core/theme'
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import { DialogMsgClose, DialogMsg, ToastMsg, ToastMsgClose } from '../../utils/notification'
 import { constant } from '../../constant/constant'
+const theme = require('../../core/theme');
 const AddProduct = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
@@ -72,7 +72,7 @@ const AddProduct = ({ navigation }) => {
     <>
 
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
+        <StatusBar barStyle="light-content" style={[theme.primaryBGColor]} />
         
         <View>
           <Input
@@ -87,8 +87,8 @@ const AddProduct = ({ navigation }) => {
             textContentType="email"
             keyboardType={'email'}
             maxLength={100}
-            placeholderTextColor={theme.colors.secondary}
-            selectionColor={theme.colors.secondary}
+            placeholderTextColor={theme.secondaryColor}
+            selectionColor={theme.secondaryColor}
             style={theme.inputDark}
           />
           <Input
@@ -103,8 +103,8 @@ const AddProduct = ({ navigation }) => {
             textContentType="text"
             keyboardType={'text'}
             maxLength={100}
-            placeholderTextColor={theme.colors.secondary}
-            selectionColor={theme.colors.secondary}
+            placeholderTextColor={theme.secondaryColor}
+            selectionColor={theme.secondaryColor}
             style={theme.inputDark}
           />
           <Input
@@ -119,8 +119,8 @@ const AddProduct = ({ navigation }) => {
             textContentType="text"
             keyboardType={'text'}
             maxLength={100}
-            placeholderTextColor={theme.colors.secondary}
-            selectionColor={theme.colors.secondary}
+            placeholderTextColor={theme.secondaryColor}
+            selectionColor={theme.secondaryColor}
             style={theme.inputDark}
           />
           <Input
@@ -135,8 +135,8 @@ const AddProduct = ({ navigation }) => {
             textContentType="text"
             keyboardType={'text'}
             maxLength={100}
-            placeholderTextColor={theme.colors.secondary}
-            selectionColor={theme.colors.secondary}
+            placeholderTextColor={theme.secondaryColor}
+            selectionColor={theme.secondaryColor}
             style={theme.inputDark}
           />
           <Input
@@ -151,8 +151,8 @@ const AddProduct = ({ navigation }) => {
             textContentType="text"
             keyboardType={'text'}
             maxLength={100}
-            placeholderTextColor={theme.colors.secondary}
-            selectionColor={theme.colors.secondary}
+            placeholderTextColor={theme.secondaryColor}
+            selectionColor={theme.secondaryColor}
             style={theme.inputDark}
           />
           <Input
@@ -167,8 +167,8 @@ const AddProduct = ({ navigation }) => {
             textContentType="text"
             keyboardType={'text'}
             maxLength={100}
-            placeholderTextColor={theme.colors.secondary}
-            selectionColor={theme.colors.secondary}
+            placeholderTextColor={theme.secondaryColor}
+            selectionColor={theme.secondaryColor}
             style={theme.inputDark}
           />
           
@@ -180,7 +180,7 @@ const AddProduct = ({ navigation }) => {
             secureTextEntry
           /> */}
           <TouchableOpacity onPress={() => LoginFun()}>
-            <View style={styles.nextButton}>
+            <View style={[styles.nextButton,theme.primaryBGColor]}>
               <Text style={theme.whiteText}>Submit</Text>
             </View>
           </TouchableOpacity>
@@ -214,15 +214,11 @@ const styles = StyleSheet.create({
     fontWeight: "900"
   },
   nextButton: {
-    backgroundColor: theme.colors.primary,
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 25,
     alignItems: "center",
     marginTop: 20,
-  },
-  buttonText: {
-    color: theme.colors.primary,
   },
   allMargen: {
     margin: 20

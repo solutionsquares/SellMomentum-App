@@ -15,6 +15,9 @@ import {
 const CategoryComponent = ({data}) => {
 
 console.log(data)
+const handleCategoryPress = () => {
+  console.log('Button pressed!');
+};
       
   const renderCategoryItem = ({ item }) => (
     <View style={{padding:2}}>

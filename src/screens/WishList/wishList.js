@@ -12,13 +12,8 @@ import {
     Image
   } from 'react-native'
 
-import { theme } from '../../core/theme'
-import Swiper from 'react-native-swiper'
-import CustomButton from '../../components/buttonComponents/buttonComponents'
 import { ScrollView } from 'react-native-gesture-handler'
-import { height } from 'deprecated-react-native-prop-types/DeprecatedImagePropType'
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
+const theme = require('../../core/theme');
 
 const WishList = ({ navigation }) => {
     const data = [
@@ -45,6 +40,11 @@ const WishList = ({ navigation }) => {
         console.log('Button pressed!');
         // Handle button press here
       };
+      function gotoProductDetail(){
+        navigation.navigate('ProductDetail')
+
+      }
+
     const renderItem = ({ item }) => (
         <TouchableOpacity  onPress={()=>gotoProductDetail()}>
         <View style={styles.cardContainer} >
@@ -74,7 +74,7 @@ const WishList = ({ navigation }) => {
         <>
             <ScrollView>
                 <View style={styles.container}>
-                    <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary} />
+                    <StatusBar barStyle="light-content" style={[theme.primaryBGColor]}/>
                     <View>
                         <FlatList
                             data={data}

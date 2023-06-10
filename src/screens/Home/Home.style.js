@@ -76,7 +76,20 @@ export default StyleSheet.create({
   },
   viewheight:{
     height:220
-  }
+  } ,
+  wrapper: {
+    bottom: 5,
+    top: 2
+  },
+  sliderContents: {
+    position: 'absolute',
+    top: 20,
+    left:20,
+    // right: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+},
+
 
 
 })
