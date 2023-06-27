@@ -93,6 +93,9 @@ module.exports = StyleSheet.create({
         alignItems:"center",
         justifyContent:"center",
       },
+      alignItemCenter:{
+        alignItems:"center",
+      },
       rowView:{
         flexDirection: "row"
       },
@@ -128,7 +131,7 @@ module.exports = StyleSheet.create({
         fontSize:20
       },
       whiteColor:{
-        color:'#fff'
+        color:white
       },
       // Margin 
       marginLeft30:{
@@ -140,7 +143,12 @@ module.exports = StyleSheet.create({
       marginTop20:{
         marginTop:20
       },
-    
+      marginTop60M:{
+        marginTop:-60
+      },
+      margin40M:{
+      margin:-40,
+      },
       // Padding 
       padding5:{
         padding:5

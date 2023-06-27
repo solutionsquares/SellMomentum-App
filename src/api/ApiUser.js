@@ -1,14 +1,14 @@
 //example api request: replace with your API request here in folder API
-import Api from "./api"
+import {Api} from "./api"
 
 export const getUser = (obj) => {
-  console.log("obj 1",obj)
   try {
-    return Api.post("/seller/login", JSON.stringify(obj))
+    return Api('POST', "/seller/login", obj)
       .then((resp) => {
+        console.log('POST', '/users',resp)
         return resp
       }).catch((error) => {
-        console.log(error)
+        console.log("Api User Error",error)
       })
   } catch (e) {
     console.log("e",e)
@@ -16,10 +16,25 @@ export const getUser = (obj) => {
   }
 }
 
+export const registerUser = (obj) => {
+  console.log('oooooo',obj)
+  try {
+    return Api('POST', "/seller/registration", obj)
+      .then((resp) => {
+        console.log('POST', '/users',resp)
+        return resp
+      }).catch((error) => {
+        console.log("Api User Error",error)
+      })
+  } catch (e) {
+    console.log("e",e)
+    return Promise.reject(e)
+  }
+}
 export const getAllList = (obj) => {
   console.log("getAllList Api")
   try {
-    return Api.get("employees")
+    return Api("employees")
       .then((resp) => {
         return resp
       }).catch((error) => {
@@ -33,5 +48,6 @@ export const getAllList = (obj) => {
 
 module.exports = {
   getUser,
+  registerUser,
   getAllList
 }

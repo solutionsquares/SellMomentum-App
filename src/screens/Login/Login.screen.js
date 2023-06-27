@@ -17,16 +17,21 @@ import Header from '../../components/header'
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import { DialogMsgClose, DialogMsg, ToastMsg, ToastMsgClose } from '../../utils/notification'
 import { constant } from '../../constant/constant'
+import Icon from 'react-native-vector-icons/Entypo';
+import validationMessages from "../../utils/validationMessages.json"
+
 const theme = require('../../core/theme');
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
   const [ApiLoader, setApiLoader] = useState(false);
+  const [show, setShow] = useState(false);
+
   const dispatch = useDispatch()
   const onLoginPressed = ({ navigation }) => {
     const emailError = emailValidator(email.value)
     const passwordError = passwordValidator(password.value)
-   
+
     if (emailError || passwordError) {
       setEmail({ ...email, error: emailError })
       setPassword({ ...password, error: passwordError })
@@ -37,47 +42,64 @@ const Login = ({ navigation }) => {
     //   routes: [{ name: 'Dashboard' }],
     // })
   }
-  function SignUpScreen(){
+  function SignUpScreen() {
     navigation.replace('Signup', { screen: 'Signup' })
   }
-  async function LoginFun() {
-    console.log(email)
+  const validateFields = () => {
+    const emailRegex = /\S+@\S+\.\S+/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+
+    if (!email.value.match(emailRegex)) {
+      ToastMsg(constant.errorActionTypes.error, 'DANGER', validationMessages.email)
+      return false;
+    }
+    console.log(password.value.length)
     console.log(password)
+
+    if (!password.value.match(passwordRegex)) {
+      ToastMsg(constant.errorActionTypes.error, 'DANGER', validationMessages.password)
+      return false;
+    }
+    return true;
+  };
+  async function LoginFun() {
+    validateFields()
     setApiLoader(true)
+    if(validateFields() == true){
     await dispatch(fetchUser({
-      "email": email.value,
-      "password": password.value
+      email: email.value,
+      password: password.value
     })).then(async (res) => {
-      if (res) {        
-        console.log("res",res)
-        //
-        try {
-        } catch (error) {
-          console.log("error",error)
-        }
-        
+      if (res) {
+        console.log("res", res)
+
         setApiLoader(false)
-        ToastMsg(constant.errorActionTypes.success, 'Success', 'OTP successfully send')
+          if(res.payload=== true){
         navigation.replace('HomeBase', { screen: 'Home' })
+      }else{
+        ToastMsg(constant.errorActionTypes.error, 'Error', res.payload?.message)
+
+      }
         // navigation.navigate('PhoneVerify', { screen: 'Home', confirm: response })
       } else {
+        console.log("error")
         setApiLoader(false)
       }
 
+    }).catch(async error=>{
+      console.log(error)
+      // DialogMsg(constant.errorActionTypes.error, 'Error', 'Invalid password')
+
     })
-    
-    // setTimeout(() => {
-    //   DialogMsgClose()
-    //   navigation.replace('HomeBase', { screen: 'Home' })
-    // }, 3000)
+  }
 
   }
 
   return (
     <>
 
-      <View style={[styles.container,theme.primaryBGColor]}>
-        <StatusBar barStyle="light-content" style={[theme.primaryBGColor]}/>
+      <View style={[styles.container, theme.primaryBGColor]}>
+        <StatusBar barStyle="light-content" style={[theme.primaryBGColor]} />
         <View style={styles.topBox}>
           <View>
             <Text style={[theme.whiteTitle, styles.allMargen]}>Welcome to tradly</Text>
@@ -104,6 +126,7 @@ const Login = ({ navigation }) => {
             selectionColor="#fff"
             style={theme.input}
           />
+          <View style={[theme.rowView,theme.alignItemCenter]}>
           <Input
             label="Password"
             returnKeyType="next"
@@ -117,22 +140,22 @@ const Login = ({ navigation }) => {
             keyboardType={'text'}
             maxLength={100}
             placeholderTextColor={'#fff'}
-            // placeholderTextColor={theme.colors.white}
             selectionColor="#fff"
             style={theme.input}
-            secureTextEntry
+            secureTextEntry={show}
           />
-
-          {/* <TextInput
-            style={theme.input}
-            placeholder="Password"
-            placeholderTextColor={theme.colors.white}
-            secureTextEntry
-          /> */}
+          <Icon
+            name={show ? 'eye' :'eye-with-line'}
+            size={20}
+            style={[theme.whiteColor,theme.margin40M,theme.marginTop60M]}
+            onPress={() =>
+              setShow(!show)
+            }></Icon>
+            </View>
           <TouchableOpacity onPress={() => LoginFun()}>
-            <View style={[styles.nextButton,theme.whiteBGColor]}>
+            <View style={[styles.nextButton, theme.whiteBGColor]}>
 
-              <Text style={[styles.buttonText,theme.primaryColor]}>Login</Text>
+              <Text style={[styles.buttonText, theme.primaryColor]}>Login</Text>
 
             </View>
           </TouchableOpacity>

@@ -1,0 +1,7 @@
+{
+    "firstName": "Please enter a valid first name.",
+    "lastName": "Please enter a valid last name.",
+    "email": "Please enter a valid email address.",
+    "password": "Password must be at least 8 characters long and contain at least one letter and one number.",
+    "passwordMismatch": "Passwords do not match."
+  }

@@ -76,7 +76,7 @@ const Home = ({ navigation }) => {
   ];
   useEffect(() => {
     // getData()
-    fetchProducts(user?.user._id)
+    // fetchProducts(user?.user._id)
   }, [])
 
   async function fetchProducts(id) {
