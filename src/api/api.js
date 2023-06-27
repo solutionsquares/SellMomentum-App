@@ -9,7 +9,7 @@ const api = axios.request({
 });
 
 export const Api = async (method,endpoint,datas) => {
-    const apiUrl = 'http://192.168.1.175:9000/v1/'+endpoint;
+    const apiUrl = 'http://192.168.1.158:9000/v1'+endpoint;
     console.log(apiUrl)
     console.log(datas)
 
@@ -20,7 +20,7 @@ export const Api = async (method,endpoint,datas) => {
       if (response.status === 200) {
         console.log('Success:', response.data);
 
-        return true
+        return response.data
       } else if (response.status === 404) {
         return false
         console.log('Not Found:', response.statusText);
@@ -39,4 +39,39 @@ export const Api = async (method,endpoint,datas) => {
 
     });
     
+};
+
+export const ApiGet = async (method,endpoint,token) => {
+  const apiUrl = 'http://192.168.1.158:9000/v1'+endpoint;
+  console.log(apiUrl)
+  console.log(token)
+
+
+  return axios.get(apiUrl,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then((response) => {
+    console.log('api 30',response,)
+    if (response.status === 200) {
+      console.log('Success:', response.data);
+
+      return response.data
+    } else if (response.status === 404) {
+      return false
+      console.log('Not Found:', response.statusText);
+    } else if (response.status === 500) {
+      console.log('Internal Server Error');
+      return false
+    } else {
+      return false
+    }
+  })
+  .catch((error) => {
+    console.log(error.response.data);
+    return error.response.data
+
+  });
+  
 };

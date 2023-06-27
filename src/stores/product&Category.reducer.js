@@ -3,7 +3,7 @@ import {
   createAsyncThunk,
   createEntityAdapter
 } from '@reduxjs/toolkit'
-import { getSellerProduct } from '../api/productApi'
+import { getSellerProduct, getCategories } from '../api/productApi'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constant } from '../constant/constant';
 
@@ -12,6 +12,10 @@ export const fetchSellerProduct = createAsyncThunk('seller/product', async (obj)
   return response
 })
 
+export const fetchCategories = createAsyncThunk('categories', async (token) => {
+  const response = await getCategories(token)
+  return response
+})
 
 
 const sellerProductAdapter = createEntityAdapter()

@@ -74,7 +74,7 @@ const Login = ({ navigation }) => {
         console.log("res", res)
 
         setApiLoader(false)
-          if(res.payload=== true){
+          if(res.payload.status === 200){
         navigation.replace('HomeBase', { screen: 'Home' })
       }else{
         ToastMsg(constant.errorActionTypes.error, 'Error', res.payload?.message)

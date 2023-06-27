@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchUser, selectAll } from '../../../src/stores/user.reducer'
 import SearchInput from '../../components/searchInput'
 import SagmentView from '../../components/sagment'
-import { fetchSellerProduct } from '../../stores/product&Category.reducer'
+import { fetchSellerProduct,fetchCategories } from '../../stores/product&Category.reducer'
 import { FloatingAction } from "react-native-floating-action";
 import CategoryComponent from '../../components/categoryComponents/categoryComponents'
 import CustomButton from '../../components/buttonComponents/buttonComponents'
@@ -27,6 +27,7 @@ const global = require('../../core/theme');
 const Home = ({ navigation }) => {
   const dispatch = useDispatch()
   const [ApiLoader, setApiLoader] = useState(false);
+  const user = useSelector(state => state?.user?.entities?.undefined)
   const all = useSelector(state => state)
   const sagmentData = [
     { id: 1, name: 'Sort by', icon: 'sort-amount-desc' },
@@ -34,17 +35,7 @@ const Home = ({ navigation }) => {
     { id: 3, name: 'Category', icon: 'th-list' },
     // Add more items as needed
   ];
-  const categories = [
-    { id: 1, category: 'Beverages', image: require('../../assets/images/categoriesImage/cat1.png') },
-    { id: 2, category: 'Bread & Bakery', image: require('../../assets/images/categoriesImage/cat2.png') },
-    { id: 3, category: 'Vegetables', image: require('../../assets/images/categoriesImage/cat3.png') },
-    { id: 4, category: 'Fruit', image: require('../../assets/images/categoriesImage/cat4.png') },
-    { id: 5, category: 'Egg', image: require('../../assets/images/categoriesImage/cat5.png') },
-    { id: 6, category: 'Frozen veg', image: require('../../assets/images/categoriesImage/cat6.png') },
-    { id: 7, category: 'Homecare', image: require('../../assets/images/categoriesImage/cat7.png') },
-    { id: 8, category: 'Pet Care', image: require('../../assets/images/categoriesImage/cat8.png') },
-  ];
-  const user = useSelector(state => state?.user?.entities?.undefined)
+  const [categories, setCategories]= useState();
   const [products, setProducts] = useState()
   const actions = [
     {
@@ -77,7 +68,22 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     // getData()
     // fetchProducts(user?.user._id)
+    getCategories();
   }, [])
+  async function getCategories(){
+    console.log('getCategories')
+    await dispatch(fetchCategories(user.token)).then((res)=>{
+      console.log(res);
+      if(res.payload.status == 200){
+        const top7Categories = res.payload.data.slice(0, 8);
+
+        setCategories(top7Categories)
+      }
+    }).catch((err)=>{
+      console.log(err);
+    })
+  }
+
 
   async function fetchProducts(id) {
     setApiLoader(true)

@@ -25,8 +25,8 @@ const handleCategoryPress = () => {
       style={styles.categoryContainer}
       onPress={() => handleCategoryPress(item.id)}
     >
-      <Image source={item.image} style={styles.image} />
-      <Text style={styles.category}>{item.category}</Text>
+      <Image source={item?.image ? item?.image : require('../../assets/images/test.jpeg')} style={styles.image} />
+      <Text style={styles.category}>{item.name}</Text>
     </TouchableOpacity>
     </View>
   );
@@ -36,7 +36,7 @@ const handleCategoryPress = () => {
         <FlatList
           data={data}
           renderItem={renderCategoryItem}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item?.id}
           numColumns={4}
           horizontal={false}
           
