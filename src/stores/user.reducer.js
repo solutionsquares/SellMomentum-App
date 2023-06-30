@@ -3,7 +3,7 @@ import {
   createAsyncThunk,
   createEntityAdapter
 } from '@reduxjs/toolkit'
-import { getUser,registerUser } from '../api/ApiUser'
+import { getUser,registerUser,logOutUser } from '../api/ApiUser'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constant } from '../constant/constant';
 
@@ -19,6 +19,12 @@ export const registerUsers = createAsyncThunk('user/registerUser', async (obj) =
   console.log(response)
   return response
 })
+export const LogoutUser = createAsyncThunk('user/getUser', async (obj) => {
+  console.log(obj)
+  const response = await logOutUser(obj)
+  console.log(response)
+  return response
+})
 
 
 
@@ -30,24 +36,30 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
-      
       .addCase(fetchUser.fulfilled, (state, action) => {
-        console.log(state)
-        console.log(action)
         if(action.payload) {
-          userAdapter.setAll(state, [action.meta.arg])
+          userAdapter.setAll(state, [action.payload.data])
         }
         userAdapter.getSelectors(state => state.user)
       })
-    
-      // .addCase(selectAll.fulfilled, (state, action) => {
-      //   console.log("sgr",action.payload)
-      //   if(action.payload) userAdapter.setAll(state, action.payload)
-      //   userAdapter.getSelectors(state => state.members)
-      //   state.isLoading = false
-
-      // })
+   
   }
+
+
+  // extraReducers: builder => {
+  //   builder
+  //     .addCase(fetchUser.pending, (state, action) => {
+  //       state.isLoading = true
+  //     })
+  //     .addCase(fetchUser.fulfilled, (state, action) => {
+  //       console.log("fetchUser setAll")
+  //       userAdapter.setAll(state, action.payload)
+  //       state.isLoading = false
+  //     })
+  //     .addCase(fetchUser.rejected, state => {
+  //       state.isLoading = false
+  //     })
+  // }
 })
 
 
