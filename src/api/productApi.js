@@ -1,5 +1,5 @@
 //example api request: replace with your API request here in folder API
-import {ApiGet} from "./api"
+import {ApiGet,ApiPostWithHeaderToken} from "./api"
 
 
 export const getSellerProduct = (id) => {
@@ -31,7 +31,25 @@ export const getCategories = (token) => {
     return Promise.reject(e)
   }
 }
+
+export const addProducts = (data) =>{
+  console.log(data)
+  try {
+    return ApiPostWithHeaderToken('POST', "/product/add", data)
+      .then((resp) => {
+        console.log('POST', '/users',resp)
+        return resp
+      }).catch((error) => {
+        console.log("Api User Error",error)
+      })
+  } catch (e) {
+    console.log("e",e)
+    return Promise.reject(e)
+  }
+
+}
 module.exports = {
   getSellerProduct,
-  getCategories
+  getCategories,
+  addProducts
 }

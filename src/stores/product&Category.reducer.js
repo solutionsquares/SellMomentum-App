@@ -18,19 +18,35 @@ export const fetchCategories = createAsyncThunk('categories', async (token) => {
 })
 
 
-const sellerProductAdapter = createEntityAdapter()
+const categoriesAdapter = createEntityAdapter()
 
-const sellerProductSlice = createSlice({
-  name: 'SellerProduct',
-  initialState: sellerProductAdapter.getInitialState([]),
+const categorySlice = createSlice({
+  name: 'category',
+  initialState: categoriesAdapter.getInitialState([]),
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(fetchSellerProduct.fulfilled, (state, action) => {
-        if(action.payload) sellerProductAdapter.setAll(state, [action.payload.data])
-        sellerProductAdapter.getSelectors(state => state.SellerProduct)
+      .addCase(fetchCategories.fulfilled, (state, action) => {
+        console.log(action)
+        console.log(state)
+        if(action.payload) {
+          categoriesAdapter.setAll(state, [action.payload.data])
+        }
+        categoriesAdapter.getSelectors(state => state.user)
       })
+   
   }
-})
+  //   addCategory: (state, action) => {
+  //     console.log(state)
+  //     console.log(action)
+      
+  //     state.push(action.payload);
+  //   },
+  //   // Add other category-related reducers here
+  // },
+});
 // export const { selectAll } = sellerProductAdapter.getSelectors(state => state.SellerProduct)
-export default sellerProductSlice.reducer
+// export const { addCategory } = categorySlice.actions;
+export const { addCategory } = categoriesAdapter.getSelectors(state => state.category)
+
+export default categorySlice.reducer

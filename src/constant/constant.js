@@ -5,5 +5,5 @@ export const constant = {
         error : "DANGER",
         worning : "WARNING"
     },
-    AsyncStorage:"SellMomentumKey"
+    AsyncStorageKey:"SellMomentumKey"
   }

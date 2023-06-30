@@ -1,9 +1,24 @@
 //example api request: replace with your API request here in folder API
-import {Api} from "./api"
+import {Api,ApiPostWithHeaderToken} from "./api"
 
 export const getUser = (obj) => {
   try {
     return Api('POST', "/seller/login", obj)
+      .then((resp) => {
+        console.log('POST', '/users',resp)
+        return resp
+      }).catch((error) => {
+        console.log("Api User Error",error)
+      })
+  } catch (e) {
+    console.log("e",e)
+    return Promise.reject(e)
+  }
+}
+export const logOutUser = (obj) => {
+  console.log("APi USer",obj)
+  try {
+    return ApiPostWithHeaderToken('POST', "/seller/logout", obj)
       .then((resp) => {
         console.log('POST', '/users',resp)
         return resp
@@ -49,5 +64,6 @@ export const getAllList = (obj) => {
 module.exports = {
   getUser,
   registerUser,
-  getAllList
+  getAllList,
+  logOutUser
 }
