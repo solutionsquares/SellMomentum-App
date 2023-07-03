@@ -9,6 +9,7 @@ const gray = '#ccc';
 const naturalBlack = '#4F4F4F';
 const white = "#FFFFFF";
 const error = '#f13a59'
+const lightShadeofblue ="F6F9FF"
 
 module.exports = StyleSheet.create({
   //colors
@@ -35,6 +36,9 @@ module.exports = StyleSheet.create({
   },
   errorColor: {
     color: error
+  },
+  pagesBGColor:{
+    backgroundColor:lightShadeofblue
   },
   errorBGColor: {
     backgroundColor: error
@@ -157,6 +161,9 @@ module.exports = StyleSheet.create({
   marginLeft30: {
     marginLeft: 30
   },
+  marginLeft10: {
+    marginLeft: 10
+  },
   marginRight30: {
     marginRight: 30
   },
@@ -232,7 +239,12 @@ module.exports = StyleSheet.create({
   },
   borderColorWhite: {
     borderColor: white
-  }
+  },
+  productFont: {
+    color: '#4F4F4F',
+    fontSize: 14,
+    opacity: 0.5
+  },
 
 
 })

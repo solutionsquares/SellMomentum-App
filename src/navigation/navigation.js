@@ -18,6 +18,8 @@ import AddProduct from '../screens/Product/addProduct'
 import ProductDetail from '../screens/Product/productDetail'
 import WishList from '../screens/WishList/wishList'
 import CartComponent from '../screens/Cart/cart'
+import OrderHistoryScreen from '../screens/OrderHistory/OrderHistory'
+import StoreScreen from '../screens/Store/Store'
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 const theme = require('../core/theme');
@@ -50,8 +52,8 @@ function AuthTabs() {
         }}
       />
       <Tab.Screen
-        name="Product"
-        component={Profile}
+        name="Store"
+        component={StoreScreen}
         options={{
           // headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
@@ -61,7 +63,7 @@ function AuthTabs() {
       />
       <Tab.Screen
         name="Order History"
-        component={Profile}
+        component={OrderHistoryScreen}
         options={{
           // headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
