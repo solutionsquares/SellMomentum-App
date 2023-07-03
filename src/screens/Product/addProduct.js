@@ -7,17 +7,19 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
-  Image
+  Image,
+  Dimensions,
+  FlatList
 
 } from 'react-native'
 import { SelectList } from 'react-native-dropdown-select-list'
-import {launchImageLibrary} from 'react-native-image-picker';
 
 import { useDispatch, useSelector } from 'react-redux'
 import Input from '../../components/textInput'
 // import ImagePicker from 'react-native-image-picker';
 import { ScrollView } from 'react-native-gesture-handler';
 import { addProducts } from '../../api/productApi'
+import { ADD_PRODUCT_IMAGES, DOLLOR_SYMBOL } from '../../utils/svg'
 // var ImagePicker = require('react-native-image-picker');
 
 const theme = require('../../core/theme');
@@ -45,13 +47,14 @@ const AddProduct = ({ navigation }) => {
 
 
   const categories = category;
-  const categoriesList = categories.map(({ name, sellerId }) => ({
+  console.log('categories', categories);
+  const categoriesList = categories && categories.map(({ name, sellerId }) => ({
     value: name,
     key: sellerId,
   }));
 
-  useEffect(()=>{
-   reqPermission() 
+  useEffect(() => {
+    reqPermission()
   })
 
   async function handleAddProduct() {
@@ -67,11 +70,11 @@ const AddProduct = ({ navigation }) => {
     formData.append('productImage', imageUri)    // setApiLoader(true)
     console.log(formData)
     addProducts(formData).then(async (res) => {
-      if (res) {        
-        console.log("res",res)
+      if (res) {
+        console.log("res", res)
         try {
         } catch (error) {
-          console.log("error",error)
+          console.log("error", error)
         }
 
         setApiLoader(false)
@@ -104,7 +107,7 @@ const AddProduct = ({ navigation }) => {
     //           setImageUri(uri);
     //         }
     //       });
-      
+
     //   // launchImageLibrary(options, response => {
     //   //   //console.log('Response = ', response);
     //   //   if (response.assets) {
@@ -153,81 +156,77 @@ const AddProduct = ({ navigation }) => {
   //   // });
   // };
 
-
+  const datas = [
+    { id: 1, title: 'Product 1', price: '$10', image: require('../../assets/images/gs1.png') },
+    { id: 2, title: 'Product 2', price: '$20', image: require('../../assets/images/gs2.png') },
+    { id: 3, title: 'Product 3', price: '$30', image: require('../../assets/images/gs3.png') },
+  ];
 
   return (
     <>
 
       <View style={styles.container}>
         <StatusBar barStyle="light-content" style={[theme.primaryBGColor]} />
-      <ScrollView>
-        <View>
-          <Input
-            label="Product Name"
-            returnKeyType="next"
-            value={productName}
-            onChangeText={(text) => setProductName(text)}
-            errorText={error}
-            autoCapitalize="none"
-            autoCompleteType="text"
-            textContentType="text"
-            keyboardType={'text'}
-            maxLength={100}
-            placeholderTextColor={theme.secondaryColor}
-            selectionColor={theme.secondaryColor}
-            style={theme.inputDarkSquare}
-          />
 
-          <Input
-            label="Product Description"
-            returnKeyType="next"
-            value={description}
-            onChangeText={(text) => setDescription(text)}
-            // error={!!email.error}
-            // errorText={email.error}
-            autoCapitalize="none"
-            autoCompleteType="text"
-            textContentType="text"
-            keyboardType={'text'}
-            maxLength={100}
-            placeholderTextColor={theme.secondaryColor}
-            selectionColor={theme.secondaryColor}
-            style={theme.inputDarkSquare}
-          />
-          <Input
-            label="Product Price"
-            returnKeyType="next"
-            value={price}
-            onChangeText={(text) => setPrice(text)}
-            // error={!!email.error}
-            // errorText={email.error}
-            autoCapitalize="none"
-            autoCompleteType="text"
-            textContentType="text"
-            keyboardType={'numeric'}
-            maxLength={100}
-            placeholderTextColor={theme.secondaryColor}
-            selectionColor={theme.secondaryColor}
-            style={theme.inputDarkSquare}
-          />
-          <Input
-            label="Product Available Stock"
-            returnKeyType="next"
-            value={inStock}
-            onChangeText={(text) => setInStock(text)}
-            // error={!!email.error}
-            // errorText={email.error}
-            autoCapitalize="none"
-            autoCompleteType="text"
-            textContentType="text"
-            keyboardType={'numeric'}
-            maxLength={100}
-            placeholderTextColor={theme.secondaryColor}
-            selectionColor={theme.secondaryColor}
-            style={theme.inputDarkSquare}
-          />
+        <ScrollView>
+          <View style={theme.rowView}>
+            <TouchableOpacity onPress={() => chooseFile()}>
+              <ADD_PRODUCT_IMAGES />
+            </TouchableOpacity>
+            <FlatList
+              data={datas}
+              style={{}}
+              horizontal
+              contentContainerStyle={{ padding: 5 }}
+              showsHorizontalScrollIndicator={true}
+              ItemSeparatorComponent={() => (
+                <View style={{ backgroundColor: 'white', width: 20 }} />
+              )}
 
-          <SelectList
+              renderItem={({ item, index }) => (
+                <TouchableOpacity
+                  // onPress={() => { openLinkOrPage(index, 'seller')}}
+                  style={{ flex: 1, position: 'relative' }}>
+                  {/* <Image style={styles.image} source={item.image} ></Image> */}
+
+                  <Image
+                    source={item.image}
+                    style={[styles.image, {
+                      width: Math.floor(Dimensions.get('window').width - 50),
+                      height: 108,
+                      resizeMode: 'cover',
+                    }]}
+                  />
+                  {/* Content Hide */}
+                  {/* <View style={[styles.sliderContents,{}]}>
+                      <Text style={[global.whiteColor,global.fontSize20,{}]}>Ready to deliver to your home</Text>
+                    </View>  */}
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item, index) => item.image_url + index}
+            />
+          </View>
+          <Text style={styles.productFont}>{'Max. 4 photos per product'}</Text>
+          <View style={{ marginTop: 20 }}>
+            <Text style={styles.productFont}>Product Name</Text>
+            <Input
+              label="Product Name"
+              returnKeyType="next"
+              value={productName}
+              onChangeText={(text) => setProductName(text)}
+              errorText={error}
+              autoCapitalize="none"
+              autoCompleteType="text"
+              textContentType="text"
+              keyboardType={'text'}
+              maxLength={100}
+              placeholderTextColor={theme.secondaryColor.color}
+              selectionColor={theme.secondaryColor.color}
+              style={theme.inputDarkSquare}
+            />
+
+            <Text style={styles.productFont}>Category Product</Text>
+            <SelectList
             setSelected={(val, key) => setCategoryId(val)}
             onSelect={(categoryId) => {
               console.log(categoryId)
@@ -236,24 +235,80 @@ const AddProduct = ({ navigation }) => {
             data={categoriesList}
             save="value"
           />
-          {imageUri && (
-            <Image
-              source={{ uri: imageUri }}
-              style={{ width: 200, height: 200, marginLeft:'auto',marginRight:'auto'}}
+            <View style={styles.priceInput}>
+              <View style={styles.input}>
+                <Text style={styles.productFont}>Price</Text>
+                <View style={theme.rowView}>
+                  <DOLLOR_SYMBOL style={styles.dollorSymbol} />
+                  <Input
+                    label="Product Price"
+                    returnKeyType="next"
+                    value={price}
+                    onChangeText={(text) => setPrice(text)}
+                    // error={!!email.error}
+                    // errorText={email.error}
+                    autoCapitalize="none"
+                    autoCompleteType="text"
+                    textContentType="text"
+                    keyboardType={'numeric'}
+                    maxLength={100}
+                    placeholderTextColor={theme.secondaryColor.color}
+                    selectionColor={theme.secondaryColor.color}
+                    style={theme.inputDarkSquare}
+                  />
+                </View>
+              </View>
+              <View style={styles.input}>
+                <Text style={styles.productFont}>Offer Price</Text>
+                <View style={theme.rowView}>
+                  <DOLLOR_SYMBOL style={styles.dollorSymbol} />
+                  <Input
+                    label="Offer Price"
+                    returnKeyType="next"
+                    value={price}
+                    onChangeText={(text) => setPrice(text)}
+                    // error={!!email.error}
+                    // errorText={email.error}
+                    autoCapitalize="none"
+                    autoCompleteType="text"
+                    textContentType="text"
+                    keyboardType={'numeric'}
+                    maxLength={100}
+                    placeholderTextColor={theme.secondaryColor.color}
+                    selectionColor={theme.secondaryColor.color}
+                    style={theme.inputDarkSquare}
+
+                  />
+                </View>
+              </View>
+            </View>
+            <Text style={styles.productFont}>Product Description</Text>
+            <Input
+              label="Product Description"
+              returnKeyType="next"
+              value={description}
+              onChangeText={(text) => setDescription(text)}
+              // error={!!email.error}
+              // errorText={email.error}
+              autoCapitalize="none"
+              autoCompleteType="text"
+              textContentType="text"
+              keyboardType={'text'}
+              maxLength={200}
+              placeholderTextColor={theme.secondaryColor.color}
+              selectionColor={theme.secondaryColor.color}
+              style={theme.inputDarkSquare}
+              multiline={true}
             />
-          )}
-          <TouchableOpacity onPress={() => chooseFile()}>
-            <View style={[styles.nextButton, theme.primaryBGColor]}>
-              <Text style={theme.whiteText}>Upload Products Images</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleAddProduct()}>
-            <View style={[styles.nextButton, theme.primaryBGColor]}>
-              <Text style={theme.whiteText}>Submit</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+            <Text style={styles.productFont}>Additional Details</Text>
+
+          </View>
         </ScrollView>
+        <TouchableOpacity style={{}} onPress={() => handleAddProduct()}>
+          <View style={[styles.nextButton, theme.primaryBGColor]}>
+            <Text style={theme.whiteText}>Add Product</Text>
+          </View>
+        </TouchableOpacity>
 
       </View>
     </>
@@ -279,6 +334,26 @@ const styles = StyleSheet.create({
   allMargen: {
     margin: 20
   },
+  productFont: {
+    color: '#4F4F4F',
+    fontSize: 14,
+    opacity: 0.5
+  },
+  priceInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  input: {
+    padding: 10,
+    marginRight: 10,
+    width: '50%',
+  },
+  dollorSymbol: {
+    marginBottom: 15,
+    alignSelf: 'center'
+  }
+
 
 
 

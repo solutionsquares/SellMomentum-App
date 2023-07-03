@@ -91,8 +91,8 @@ module.exports = StyleSheet.create({
   },
   inputDarkSquare: {
     backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: "#000",
+    borderBottomWidth: 1,
+    borderColor: "#DBDBDE",
     borderRadius: 5,
     color: "#000",
     marginBottom: 20,

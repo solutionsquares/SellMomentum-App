@@ -56,10 +56,10 @@ const Login = ({ navigation }) => {
     console.log(password.value.length)
     console.log(password)
 
-    if (!password.value.match(passwordRegex)) {
-      ToastMsg(constant.errorActionTypes.error, 'DANGER', validationMessages.password)
-      return false;
-    }
+    // if (!password.value.match(passwordRegex)) {
+    //   ToastMsg(constant.errorActionTypes.error, 'DANGER', validationMessages.password)
+    //   return false;
+    // }
     return true;
   };
   async function LoginFun() {

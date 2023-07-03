@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchUser, selectAll } from '../../../src/stores/user.reducer'
 import SearchInput from '../../components/searchInput'
 import SagmentView from '../../components/sagment'
-import { fetchSellerProduct,fetchCategories } from '../../stores/product&Category.reducer'
+import { fetchSellerProduct, fetchCategories } from '../../stores/product&Category.reducer'
 import { FloatingAction } from "react-native-floating-action";
 import CategoryComponent from '../../components/categoryComponents/categoryComponents'
 import CustomButton from '../../components/buttonComponents/buttonComponents'
@@ -35,7 +35,7 @@ const Home = ({ navigation }) => {
     { id: 3, name: 'Category', icon: 'th-list' },
     // Add more items as needed
   ];
-  const [categories, setCategories]= useState();
+  const [categories, setCategories] = useState();
   const [products, setProducts] = useState()
   const actions = [
     {
@@ -70,16 +70,16 @@ const Home = ({ navigation }) => {
     // fetchProducts(user?.user._id)
     getCategories();
   }, [])
-  async function getCategories(){
+  async function getCategories() {
     console.log('getCategories')
-    await dispatch(fetchCategories(user.token)).then((res)=>{
+    await dispatch(fetchCategories(user.token)).then((res) => {
       console.log(res);
-      if(res.payload.status == 200){
+      if (res.payload.status == 200) {
         const top7Categories = res.payload.data.slice(0, 8);
 
         setCategories(top7Categories)
       }
-    }).catch((err)=>{
+    }).catch((err) => {
       console.log(err);
     })
   }
@@ -168,17 +168,13 @@ const Home = ({ navigation }) => {
 
   return (
     <>
-      {/* <StatusBar barStyle="light-content" backgroundColor={global.colors.primary} /> */}
-      <StatusBar barStyle="light-content" style={[global.primaryBGColor]}
-      // backgroundColor={global.colors.primary} 
-      />
+      <StatusBar barStyle="light-content" style={[global.primaryBGColor]} />
       <SafeAreaView style={styles.SafeAreaView1} />
       <SafeAreaView style={styles.SafeAreaView2}>
-        <ScrollView>
-          <View >
-            <SearchInput />
-            {/* <SagmentView sagmentData={sagmentData} /> */}
-            <View>
+        <View style={styles.MainContainer}>
+        <SearchInput />
+          <ScrollView >
+          <View style={{padding:10}}>
               <FlatList
                 data={datas}
                 style={{}}
@@ -191,10 +187,7 @@ const Home = ({ navigation }) => {
 
                 renderItem={({ item, index }) => (
                   <TouchableOpacity
-                    // onPress={() => { openLinkOrPage(index, 'seller')}}
                     style={{ flex: 1, position: 'relative' }}>
-                    {/* <Image style={styles.image} source={item.image} ></Image> */}
-
                     <Image
                       source={item.image}
                       style={[styles.image, {
@@ -203,17 +196,12 @@ const Home = ({ navigation }) => {
                         resizeMode: 'cover',
                       }]}
                     />
-                    {/* Content Hide */}
-                    {/* <View style={[styles.sliderContents,{}]}>
-                      <Text style={[global.whiteColor,global.fontSize20,{}]}>Ready to deliver to your home</Text>
-                    </View>  */}
+                
                   </TouchableOpacity>
                 )}
                 keyExtractor={(item, index) => item.image_url + index}
               />
-
             </View>
-
             <View style={[global.paddingHorizontal20]}>
               <View>
                 <CategoryComponent data={categories} ></CategoryComponent>
@@ -283,9 +271,10 @@ const Home = ({ navigation }) => {
                 horizontal
               />
             </View>
-          </View>
-        </ScrollView>
-        <View style={styles.container}>
+           
+
+          </ScrollView>
+
           <FloatingAction
             actions={actions}
             visible={true}
@@ -299,6 +288,7 @@ const Home = ({ navigation }) => {
               name == 'productBtn' ? navigation.navigate('AddProduct') : '';
             }}
           />
+
         </View>
       </SafeAreaView>
     </>

@@ -91,5 +91,11 @@ export default StyleSheet.create({
 },
 
 
+MainContainer :{
+
+  justifyContent: 'center',
+  flex:1,
+  // margin: 10
+},
 
 })
