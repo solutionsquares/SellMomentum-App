@@ -32,10 +32,12 @@ export const getCategories = (token) => {
   }
 }
 
-export const addProducts = (data) =>{
+export const addProducts = (data,token) =>{
   console.log(data)
+  console.log(token)
+
   try {
-    return ApiPostWithHeaderToken('POST', "/product/add", data)
+    return ApiPostWithHeaderToken('POST', "/product/add", data,token)
       .then((resp) => {
         console.log('POST', '/users',resp)
         return resp

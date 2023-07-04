@@ -20,6 +20,7 @@ import Input from '../../components/textInput'
 import { ScrollView } from 'react-native-gesture-handler';
 import { addProducts } from '../../api/productApi'
 import { ADD_PRODUCT_IMAGES, DOLLOR_SYMBOL } from '../../utils/svg'
+// import RNFS from 'react-native-fs';
 // import ImagePicker from 'react-native-image-picker';
 // import {ImagePicker, launchImageLibrary} from 'react-native-image-picker';
 // var ImagePicker = require('react-native-image-picker');
@@ -29,19 +30,30 @@ import {
   launchCamera,
   launchImageLibrary
 } from 'react-native-image-picker';
+import RNFS from 'react-native-fs';
+
+var fs = require('react-native-fs');
+
 
 const theme = require('../../core/theme');
 const AddProduct = ({ navigation }) => {
-  const [filePath, setFilePath] = useState({});
+  const dispatch = useDispatch()
+  const user = useSelector(state => state?.user?.entities?.undefined)
+
 
   const [productName, setProductName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+  const [offerPrice,setOfferPrice] =useState('')
   const [inStock, setInStock] = useState('');
   const [categoryId, setCategoryId] = useState('');
+  const [selectedCategoryId,setSelectedCategoryId] = useState("")
   const [imageUri, setImageUri] = useState("https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60");
   const [error, setError] = useState('');
-  const dispatch = useDispatch()
+  const [productsImages, setProductsImages] = useState([])
+  const [filePath, setFilePath] = useState({});
+
+console.log(user)
   let isReadGranted;
   const reqPermission = async () => {
     // if (Platform.OS === 'android') {
@@ -58,178 +70,139 @@ const AddProduct = ({ navigation }) => {
 
   const categories = category;
   console.log('categories', categories);
-  const categoriesList = categories && categories.map(({ name, sellerId }) => ({
+  const categoriesList = categories && categories.map(({ name, sellerId,_id}) => ({
     value: name,
     key: sellerId,
+    id: _id
   }));
 
   useEffect(() => {
     reqPermission()
   })
+ function validate(){
+  
+    if (productName === "") {
+      console.log("Please enter a product name.");
+      return false;
+    }
+  
+    // Validate description (should not be empty)
+    if (description === "") {
+      console.log("Please enter a description.");
+      return false;
+    }
+  
+    // Validate inStock (should be a positive number)
+    if (isNaN(inStock) || inStock <= 0) {
+      console.log("Please enter a valid quantity in stock.");
+      return false;
+    }
+  
+    // Validate selectedCategoryId (should not be empty)
+    if (selectedCategoryId === "") {
+      console.log("Please select a category.");
+      return false;
+    }
+  
+    // Validate imageUri (should be a valid URL)
+    if (!isValidUrl(imageUri)) {
+      console.log("Please enter a valid image URL.");
+      return false;
+    }
+  
+    // Validate price (should be a positive number)
+    if (isNaN(price) || price <= 0) {
+      console.log("Please enter a valid price.");
+      return false;
+    }
+  
+    // Validate offerPrice (should be a positive number and less than price)
+    if (isNaN(offerPrice) || offerPrice <= 0 || offerPrice >= price) {
+      console.log("Please enter a valid offer price.");
+      return false;
+    }
+  
+    // All validations passed
+    return true;
+  }
+  function isValidUrl(url) {
+    var pattern = new RegExp(
+      "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))" + // domain name or IP
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+      "i"
+    ); // fragment locator
+  
+    return pattern.test(url);
+  }
 
+  const readFile = async (filePath) => {
+    try {
+      const fileContent = await RNFS.readFile(filePath, 'utf8');
+      console.log('File content:', fileContent);
+    } catch (error) {
+      console.error('Error reading file:', error);
+    }
+  };
+
+  useEffect(() => {
+    // readFile(filePath)
+  },[filePath])
+
+ useEffect(() => {
+
+  for (let index = 0; index < categoriesList?.length; index++) {
+    const element = categoriesList[index];
+    if(element.value === categoryId){
+      console.log(element)
+      setSelectedCategoryId(element.id)
+    }
+  }
+}, [categoryId])
   async function handleAddProduct() {
+    
     validate()
-    console.log(productName)
-    console.log(categoryId);
-    const formData = new FormData();
-    formData.append('productName', productName);
-    formData.append('description', description);
-    formData.append('price', price);
-    formData.append('inStock', inStock);
-    formData.append('categoryId', categoryId);
-    formData.append('productImage', imageUri)    // setApiLoader(true)
-    console.log(formData)
-    addProducts(formData).then(async (res) => {
-      if (res) {
-        console.log("res", res)
-        try {
-        } catch (error) {
-          console.log("error", error)
+    console.log(validate())
+    if( validate() == true){
+      const formData = new FormData();
+      formData.append('name', productName);
+      formData.append('description', description);
+      formData.append('price', price);
+      formData.append('inStock', inStock);
+      formData.append('categoryId', selectedCategoryId);
+      // formData.append('product', fs.readFile(filePath, 'utf8'))    // setApiLoader(true)
+      // formData.append('product', fs.readFile(filePath));
+      formData.append('product', {
+        name: filePath.fileName,
+        type: filePath.type,
+        uri:  filePath.uri,
+      });
+    
+      console.log(formData)
+      addProducts(formData,user.token).then(async (res) => {
+        if (res) {
+          console.log("res", res)
+          try {
+          } catch (error) {
+            console.log("error", error)
+          }
+
+          // setApiLoader(false)
+          ToastMsg(constant.errorActionTypes.success, 'Success', 'OTP successfully send')
+        } else {
+          // setApiLoader(false)
         }
 
-        setApiLoader(false)
-        ToastMsg(constant.errorActionTypes.success, 'Success', 'OTP successfully send')
-      } else {
-        setApiLoader(false)
-      }
-
-    })
+      })
+    }
 
 
   }
-  // const chooseFile = type => {
-  //   const options = {
-  //     noData: true,
-  //   };
-  //   ImagePicker.launchImageLibrary(options, (response) => {
-  //     if (response.uri) {
-  //       this.setState({ photo: response });
-  //     }
-  //   });
-  //   // if (isReadGranted === 'denied') {
-  //   //   reqPermission();
-  //   // } else {
-  //   //   let options = {
-  //   //     mediaType: type,
-  //   //     maxWidth: 300,
-  //   //     maxHeight: 550,
-  //   //     quality: 1,
-  //   //   };
-  //   //   ImagePicker.launchImageLibrary(options, response => {
-  //   //         if (response.didCancel) {
-  //   //           console.log('User cancelled image picker');
-  //   //         } else if (response.error) {
-  //   //           console.log('Image picker error:', response.error);
-  //   //         } else {
-  //   //           const uri = response.uri;
-  //   //           setImageUri(uri);
-  //   //         }
-  //   //       });
-
-  //   //   // launchImageLibrary(options, response => {
-  //   //   //   //console.log('Response = ', response);
-  //   //   //   if (response.assets) {
-  //   //   //     setFilePath(response.assets[0]);
-  //   //   //   } else if (response.didCancel) {
-  //   //   //     setError('User cancelled image picker');
-  //   //   //     setToast(true);
-  //   //   //     return;
-  //   //   //   } else if (response.errorCode === 'camera_unavailable') {
-  //   //   //     setError('Camera not available on device');
-  //   //   //     setToast(true);
-  //   //   //     return;
-  //   //   //   } else if (response.errorCode === 'permission') {
-  //   //   //     setError('Permission not satisfied');
-  //   //   //     setToast(true);
-  //   //   //     return;
-  //   //   //   } else if (response.errorCode === 'others') {
-  //   //   //     setError(response.errorMessage);
-  //   //   //     setToast(true);
-  //   //   //     return;
-  //   //   //   }
-  //   //   //   // setFilePath(response);
-  //   //   // });
-  //   // }
-  // };
-
-  const requestCameraPermission = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-          {
-            title: 'Camera Permission',
-            message: 'App needs camera permission',
-          },
-        );
-        // If CAMERA Permission is granted
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
-      } catch (err) {
-        console.warn(err);
-        return false;
-      }
-    } else return true;
-  };
-
-  const requestExternalWritePermission = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          {
-            title: 'External Storage Write Permission',
-            message: 'App needs write permission',
-          },
-        );
-        // If WRITE_EXTERNAL_STORAGE Permission is granted
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
-      } catch (err) {
-        console.warn(err);
-        alert('Write permission err', err);
-      }
-      return false;
-    } else return true;
-  };
-
-  const captureImage = async (type) => {
-    let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
-      videoQuality: 'low',
-      durationLimit: 30, //Video max duration in seconds
-      saveToPhotos: true,
-    };
-    let isCameraPermitted = await requestCameraPermission();
-    let isStoragePermitted = await requestExternalWritePermission();
-    if (isCameraPermitted && isStoragePermitted) {
-      launchCamera(options, (response) => {
-        console.log('Response = ', response);
-
-        if (response.didCancel) {
-          alert('User cancelled camera picker');
-          return;
-        } else if (response.errorCode == 'camera_unavailable') {
-          alert('Camera not available on device');
-          return;
-        } else if (response.errorCode == 'permission') {
-          alert('Permission not satisfied');
-          return;
-        } else if (response.errorCode == 'others') {
-          alert(response.errorMessage);
-          return;
-        }
-        console.log('base64 -> ', response.base64);
-        console.log('uri -> ', response.uri);
-        console.log('width -> ', response.width);
-        console.log('height -> ', response.height);
-        console.log('fileSize -> ', response.fileSize);
-        console.log('type -> ', response.type);
-        console.log('fileName -> ', response.fileName);
-        setFilePath(response);
-      });
-    }
+  const onItemSelected = (item) => {
+    console.log(item.id,'Usman')
+    setSelectedItem(item.id);
   };
   const chooseFile = (type) => {
     let options = {
@@ -238,13 +211,13 @@ const AddProduct = ({ navigation }) => {
       maxHeight: 550,
       quality: 1,
     };
-    launchImageLibrary(  {
+    launchImageLibrary({
       mediaType: 'photo',
       includeBase64: false,
       maxHeight: 200,
       maxWidth: 200,
     }, (response) => {
-      console.log('Response = ', response);
+      console.log('Response = ', response.assets[0]);
 
       if (response.didCancel) {
         alert('User cancelled camera picker');
@@ -259,43 +232,17 @@ const AddProduct = ({ navigation }) => {
         alert(response.errorMessage);
         return;
       }
-      console.log('base64 -> ', response.base64);
-      console.log('uri -> ', response.uri);
-      console.log('width -> ', response.width);
-      console.log('height -> ', response.height);
-      console.log('fileSize -> ', response.fileSize);
-      console.log('type -> ', response.type);
-      console.log('fileName -> ', response.fileName);
-      setFilePath(response);
+      setFilePath(response.assets[0]);
+      productsImages.push({ image: response.assets[0].uri })
+      console.log(productsImages)
+
     });
   };
 
-  // const openImagePicker = () => {
-  // console.log("Temperrory disbled")
-  //   // const options = {
-  //   //   mediaType: 'photo',
-  //   //   includeBase64: false,
-  //   //   maxHeight: 200,
-  //   //   maxWidth: 200,
-  //   // };
-
-
-  //   // ImagePicker.launchImageLibrary(options, response => {
-  //   //   if (response.didCancel) {
-  //   //     console.log('User cancelled image picker');
-  //   //   } else if (response.error) {
-  //   //     console.log('Image picker error:', response.error);
-  //   //   } else {
-  //   //     const uri = response.uri;
-  //   //     setImageUri(uri);
-  //   //   }
-  //   // });
-  // };
+ 
 
   const datas = [
     { id: 1, title: 'Product 1', price: '$10', image: require('../../assets/images/gs1.png') },
-    { id: 2, title: 'Product 2', price: '$20', image: require('../../assets/images/gs2.png') },
-    { id: 3, title: 'Product 3', price: '$30', image: require('../../assets/images/gs3.png') },
   ];
 
   return (
@@ -310,7 +257,7 @@ const AddProduct = ({ navigation }) => {
               <ADD_PRODUCT_IMAGES />
             </TouchableOpacity>
             <FlatList
-              data={datas}
+              data={productsImages}
               style={{}}
               horizontal
               contentContainerStyle={{ padding: 5 }}
@@ -326,11 +273,12 @@ const AddProduct = ({ navigation }) => {
                   {/* <Image style={styles.image} source={item.image} ></Image> */}
 
                   <Image
-                    source={item.image}
+                    source={{ uri: item.image }}
+                    // source={item.image}
                     style={[styles.image, {
                       width: Math.floor(Dimensions.get('window').width - 50),
                       height: 108,
-                      resizeMode: 'cover',
+                      resizeMode: 'contain',
                     }]}
                   />
                   {/* Content Hide */}
@@ -363,12 +311,10 @@ const AddProduct = ({ navigation }) => {
 
             <Text style={styles.productFont}>Category Product</Text>
             <SelectList
-              setSelected={(val, key) => setCategoryId(val)}
-              onSelect={(categoryId) => {
-                console.log(categoryId)
-
-              }}
+              setSelected={(val) => setCategoryId(val)}
               data={categoriesList}
+              onItemSelected={onItemSelected}
+
               save="value"
             />
             <View style={styles.priceInput}>
@@ -401,8 +347,8 @@ const AddProduct = ({ navigation }) => {
                   <Input
                     label="Offer Price"
                     returnKeyType="next"
-                    value={price}
-                    onChangeText={(text) => setPrice(text)}
+                    value={offerPrice}
+                    onChangeText={(text) => setOfferPrice(text)}
                     // error={!!email.error}
                     // errorText={email.error}
                     autoCapitalize="none"
@@ -418,6 +364,24 @@ const AddProduct = ({ navigation }) => {
                 </View>
               </View>
             </View>
+            <Text style={styles.productFont}>Product Stock</Text>
+            <Input
+              label="Available Products Stock"
+              returnKeyType="next"
+              value={inStock}
+              onChangeText={(text) => setInStock(text)}
+              // error={!!email.error}
+              // errorText={email.error}
+              autoCapitalize="none"
+              autoCompleteType="text"
+              textContentType="text"
+              keyboardType={'numeric'}
+              maxLength={100}
+              placeholderTextColor={theme.secondaryColor.color}
+              selectionColor={theme.secondaryColor.color}
+              style={theme.inputDarkSquare}
+              multiline={true}
+            />
             <Text style={styles.productFont}>Product Description</Text>
             <Input
               label="Product Description"
