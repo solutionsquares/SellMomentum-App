@@ -1,132 +1,153 @@
+
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux'
+import userSlice from "../stores/user.reducer";
 
-const api = axios.request({
-  baseURL: 'http://localhost:9000/v1',
-  timeout: 5000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+const host = 'http://192.168.1.158:9000/v1';
+var tokens = '';
 
-export const Api = async (method,endpoint,datas) => {
-    const apiUrl = 'http://192.168.1.158:9000/v1'+endpoint;
-    console.log(apiUrl)
-    console.log(datas)
+export async function getUser(obj) {
+  // Access the token from the Redux store state
+  console.log(userSlice)
+  // const { token } = store.getState().user;
 
-
-    return axios.post(apiUrl,datas)
-    .then((response) => {
-      console.log('api 30',response,)
-      if (response.status === 200) {
-        console.log('Success:', response.data);
-
-        return response.data
-      } else if (response.status === 404) {
-        return false
-        console.log('Not Found:', response.statusText);
-      } else if (response.status === 500) {
-        console.log('Internal Server Error');
-        return false
-      } else {
-        return false
-
-        console.log('Unhandled status code:', response.status);
-      }
-    })
-    .catch((error) => {
-      console.log(error.response.data);
-      return error.response.data
-
-    });
-    
-};
-export const ApiPostWithHeaderToken = async (method,endpoint,data,token) => {
-  const apiUrl = 'http://192.168.1.158:9000/v1'+endpoint;
-  console.log(apiUrl)
-  console.log(token)
-
-  const axiosInstance = axios.create({
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'multipart/form-data'
-    }
-  });
-
-  axiosInstance.post(apiUrl, data)
-  .then(response => {
-    // Handle the response
-    console.log(response.data);
-    return response.data
-  })
-  .catch(error => {
-    // Handle the error
-    console.error(error);
-  });
-
-
-
-  // return axios.post(apiUrl,data,{
+  // // Make API request with the token
+  // // Example:
+  // const response = await fetch('your/api/endpoint', {
   //   headers: {
   //     Authorization: `Bearer ${token}`,
-  //     'Content-Type': 'application/json',
   //   },
-  // })
-  // .then((response) => {
-  //   console.log('api 30',response,)
-  //   if (response.status === 200) {
-  //     console.log('Success:', response.data);
-
-  //     return response.data
-  //   } else if (response.status === 404) {
-  //     return false
-  //     console.log('Not Found:', response.statusText);
-  //   } else if (response.status === 500) {
-  //     console.log('Internal Server Error');
-  //     return false
-  //   } else {
-  //     return false
-  //   }
-  // })
-  // .catch((error) => {
-  //   console.log(error)
-  //   console.log(error.response.data);
-  //   return error.response.data
-
   // });
-  
-};
 
-export const ApiGet = async (method,endpoint,token) => {
-  const apiUrl = 'http://192.168.1.158:9000/v1'+endpoint;
-  console.log(apiUrl)
-  console.log(token)
+  // // Process the response and return the data
+  // const data = await response.json();
+  // return data;
+}
+const axiosInstance = axios.create();
 
+// Add request interceptor
+axiosInstance.interceptors.request.use(
+  (config) => {
+    // config.headers = headers(getToken());
 
-  return axios.get(apiUrl,{
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-  .then((response) => {
-    console.log('api 30',response,)
-    if (response.status === 200) {
+    config.headers.Authorization =  `Bearer ${getToken()}`;
+    console.log(config)
+
+  return config;
+
+  },
+  (error) => {
+    console.log(error)
+
+    // Handle request error
+    return Promise.reject(error);
+  }
+);
+ axiosInstance.interceptors.response.use(
+  (response) =>{ 
+    console.log(response)
+    if (response.data.status === 200) {
       console.log('Success:', response.data);
-
-      return response.data
-    } else if (response.status === 404) {
-      return false
+      return response;
+    } else if (response.data.status === 404) {
       console.log('Not Found:', response.statusText);
-    } else if (response.status === 500) {
+      return false;
+    } else if (response.data.status === 500) {
       console.log('Internal Server Error');
-      return false
+      return false;
     } else {
-      return false
-    }
-  })
-  .catch((error) => {
-    console.log(error.response.data);
-    return error.response.data
+      console.log('Unhandled status code:', response.data.status);
+      return false;
+    }  },
+  (error) => {
+    // Error
+    console.log('error 117',error)
+    return error.response
 
-  });
-  
+    const { config, response: { status } } = error;
+    if (status === 400) {
+      // Unauthorized request: maybe access token has expired!
+      // return refreshAccessToken(config);
+    } else {
+      return Promise.reject(error);
+    }
+  }
+);
+
+
+
+const refreshAccessToken=(config)=>{
+  console.log("Config",config)
+//   return post('/api/refresh_token', {
+//     'refresh_token': JSON.parse(localStorage.getItem('token'))['refresh_token']
+// }).then(response => {
+//     /*saveToken();*/
+//     localStorage.setItem('token', JSON.stringify(response.data));
+//     error.response.config.headers['Authorization'] = 'Bearer ' + response.data.access_token;
+//     return axios(error.response.config);
+// }).catch(error => {
+//     /*destroyToken();*/
+//     localStorage.setItem('token', '');
+//     this.router.push('/login');
+//     return Promise.reject(error);
+// }).finally(createAxiosResponseInterceptor);
+
+}
+export const GetWithHeaderToken = async (method, endpoint, token) => {
+  tokens = token
+  console.log(tokens)
+
+  let v = await sellMomentumTask(method, endpoint);
+  return v;
 };
+
+export const Post = async (method, endpoint, params) => {
+  let v = await sellMomentumTask(method, endpoint, params);
+  return v;
+};
+
+export const PostWithHeaderToken = async (method, endpoint, params ,token) => {
+  tokens = ''
+  tokens = token
+  let v = await sellMomentumTask(method, endpoint, params);
+  return v;
+};
+
+function getToken() {
+  console.log(tokens)
+  // Implement your logic to get the token here
+  // For example, you can retrieve it from localStorage or a state variable
+  return tokens;
+}
+
+function sellMomentumTask(method, endpoint, params) {
+    let config = {
+      method: method,
+      maxBodyLength: Infinity,
+      url: `${host}${endpoint}`,
+      data: params,
+    };
+  console.log("config",config)
+  return axiosInstance
+    .request(config)
+    .then((response) => {
+      console.log(response?.data);
+      if (response.data.status === 200) {
+              console.log('Success:', response.data);
+              return response.data;
+            } else if (response.data.status === 400) {
+              console.log('Not Found:', response.statusText);
+              return response.data;
+            } else if (response.data.status === 500) {
+              console.log('Internal Server Error');
+              return false;
+            } else {
+              console.log('Unhandled status code:', response.data.status);
+              return false;
+            }
+    })
+    .catch((error) => {
+      console.log(error);
+      return error.response.data;
+    });
+}

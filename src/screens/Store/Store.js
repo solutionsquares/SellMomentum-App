@@ -4,10 +4,18 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import CustomButton from '../../components/buttonComponents/buttonComponents';
 import { useState } from 'react';
 import Input from '../../components/textInput'
+import SearchInput from '../../components/searchInput';
+import { useEffect } from 'react';
+import { fetchSellerProduct, fetchCategories } from '../../stores/product&Category.reducer'
+import { useDispatch, useSelector } from 'react-redux'
 
 const theme = require('../../core/theme');
 
 const StoreScreen = () => {
+    const user = useSelector(state => state?.user?.entities?.undefined)
+    const dispatch = useDispatch()
+
+
     const [storeIsAvailable, setStoreIsAvailable] = useState(true)
     const [storeForm, setStoreForm] = useState(false);
     const [storeName, setStoreName] = useState('');
@@ -19,13 +27,37 @@ const StoreScreen = () => {
     const [state, setState] = useState('')
     const [country, setCountry] = useState('')
 
+    useEffect(()=>{
+        getProducts()
+    })
+
+    async function getProducts(){
+        await dispatch(fetchSellerProduct(user.token)).then(async (res) => {
+            if (res) {
+              console.log("res", res)
+              setProducts(res.payload.data)
+              try {
+              } catch (error) {
+                console.log("error", error)
+              }
+      
+              setApiLoader(false)
+      
+            } else {
+              setApiLoader(false)
+            }
+      
+          })
+    }
 
     const handleButtonPress = () => {
         console.log('Button pressed!');
         setStoreForm(!storeForm)
+        console.log(storeForm)
     };
     const handleButton1Press = () => {
         console.log('Button 1 pressed');
+
         // Perform any actions or function calls here
       };
     
@@ -212,6 +244,7 @@ const StoreScreen = () => {
                     ) : null}
                 </ScrollView>
             ) : (
+                <View>
                 <View style={[theme.alignItemCenter, theme.paddingTop20, { height: 250, backgroundColor: '#fff' }]}>
                     <View style={[theme.largeCircle, theme.borderWidthCss, , theme.borderColorWhite,]}>
                         <Text style={[theme.whiteColor, theme.fontSize20, theme.alignItemCenter, theme.fontBold]}>T</Text>
@@ -233,13 +266,16 @@ const StoreScreen = () => {
                         textColor={true} />
                     </View>
                 </View>
+                <View>
+                <SearchInput bgColor={false} />
+                </View>
+                </View>
             )}
             {storeForm ? (
-
                 <View style={[theme.alignItemCenter]}>
                     <CustomButton
                         onPress={handleButtonPress}
-                        title="Create Store"
+                        title="Add Store"
                         width={180}
                         backgroundColor={true}
                         textColor={true} />

@@ -71,12 +71,11 @@ const Home = ({ navigation }) => {
     getCategories();
   }, [])
   async function getCategories() {
-    console.log('getCategories')
+    console.log('getCategories',user.token)
     await dispatch(fetchCategories(user.token)).then((res) => {
       console.log(res);
-      if (res.payload.status == 200) {
+      if (res.payload) {
         const top7Categories = res.payload.data.slice(0, 8);
-
         setCategories(top7Categories)
       }
     }).catch((err) => {
@@ -172,7 +171,7 @@ const Home = ({ navigation }) => {
       <SafeAreaView style={styles.SafeAreaView1} />
       <SafeAreaView style={styles.SafeAreaView2}>
         <View style={styles.MainContainer}>
-        <SearchInput />
+        <SearchInput bgColor={true}/>
           <ScrollView >
           <View style={{padding:10}}>
               <FlatList

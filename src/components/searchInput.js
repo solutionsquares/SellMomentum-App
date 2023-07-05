@@ -2,9 +2,9 @@ import { StyleSheet, Text, View, TextInput } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const theme = require('../core/theme');
 
-const SearchInput = ({ navigation }) => {
+const SearchInput = ({ bgColor }) => {
     return (
-        <View style={[theme.primaryBGColor, {padding: 20, }]}>
+        <View style={[bgColor ? theme.primaryBGColor :'', {padding: 20, }]}>
             <View style={[styles.container,theme.whiteBGColor]}>
                 <FontAwesome name="search" size={20} style={[theme.primaryColor,{ marginRight: 10 }]} />
                 <TextInput

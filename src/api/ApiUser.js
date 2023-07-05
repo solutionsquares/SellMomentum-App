@@ -1,9 +1,9 @@
 //example api request: replace with your API request here in folder API
-import {Api,ApiPostWithHeaderToken} from "./api"
+import {Api,ApiPostWithHeaderToken,Post,PostWithHeaderToken} from "./api"
 
 export const getUser = (obj) => {
   try {
-    return Api('POST', "/seller/login", obj)
+    return Post('post', "/seller/login", obj)
       .then((resp) => {
         console.log('POST', '/users',resp)
         return resp
@@ -15,10 +15,26 @@ export const getUser = (obj) => {
     return Promise.reject(e)
   }
 }
-export const logOutUser = (obj) => {
-  console.log("APi USer",obj)
+export const logOutUser = (token) => {
+  console.log("APi USer",token)
   try {
-    return ApiPostWithHeaderToken('POST', "/seller/logout", obj)
+    return PostWithHeaderToken('post', "/seller/logout", token)
+      .then((resp) => {
+        console.log('POST', '/users',resp)
+        return resp
+      }).catch((error) => {
+        console.log("Api User Error",error)
+      })
+  } catch (e) {
+    console.log("e",e)
+    return Promise.reject(e)
+  }
+}
+
+export const genrateToken = (token) => {
+  console.log("APi USer",token)
+  try {
+    return Post('post', "/seller/generate/access_token", token)
       .then((resp) => {
         console.log('POST', '/users',resp)
         return resp
@@ -65,5 +81,6 @@ module.exports = {
   getUser,
   registerUser,
   getAllList,
+  genrateToken,
   logOutUser
 }

@@ -1,11 +1,11 @@
 //example api request: replace with your API request here in folder API
-import {ApiGet,ApiPostWithHeaderToken} from "./api"
+import {ApiGet,PostWithHeaderToken,GetWithHeaderToken} from "./api"
 
 
-export const getSellerProduct = (id) => {
-  console.log("obj 1",id)
+export const getSellerProduct = (token) => {
+  console.log("obj 1",token)
   try {
-    return ApiGet("/product/products_list_seller/"+id)
+    return GetWithHeaderToken("get","/product/list/",token)
       .then((resp) => {
         return resp
       }).catch((error) => {
@@ -20,7 +20,7 @@ export const getSellerProduct = (id) => {
 export const getCategories = (token) => {
   console.log("obj 2")
   try {
-    return ApiGet("GET","/category/list",token)
+    return GetWithHeaderToken("get","/category/list",token)
       .then((resp) => {
         return resp
       }).catch((error) => {
@@ -34,10 +34,8 @@ export const getCategories = (token) => {
 
 export const addProducts = (data,token) =>{
   console.log(data)
-  console.log(token)
-
   try {
-    return ApiPostWithHeaderToken('POST', "/product/add", data,token)
+    return PostWithHeaderToken('post', "/product/add",data,token)
       .then((resp) => {
         console.log('POST', '/users',resp)
         return resp

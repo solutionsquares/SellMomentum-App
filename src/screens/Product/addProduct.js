@@ -19,7 +19,12 @@ import Input from '../../components/textInput'
 // import ImagePicker from 'react-native-image-picker';
 import { ScrollView } from 'react-native-gesture-handler';
 import { addProducts } from '../../api/productApi'
+import { fetchUser, selectAll, genrateTokens} from '../../stores/user.reducer'
 import { ADD_PRODUCT_IMAGES, DOLLOR_SYMBOL } from '../../utils/svg'
+import { constant } from '../../constant/constant';
+import { DialogMsgClose, DialogMsg, ToastMsg, ToastMsgClose } from '../../utils/notification'
+
+
 // import RNFS from 'react-native-fs';
 // import ImagePicker from 'react-native-image-picker';
 // import {ImagePicker, launchImageLibrary} from 'react-native-image-picker';
@@ -37,8 +42,9 @@ var fs = require('react-native-fs');
 
 const theme = require('../../core/theme');
 const AddProduct = ({ navigation }) => {
-  const dispatch = useDispatch()
   const user = useSelector(state => state?.user?.entities?.undefined)
+  const dispatch = useDispatch()
+
 
 
   const [productName, setProductName] = useState('');
@@ -54,6 +60,8 @@ const AddProduct = ({ navigation }) => {
   const [filePath, setFilePath] = useState({});
 
 console.log(user)
+  console.log(user)
+
   let isReadGranted;
   const reqPermission = async () => {
     // if (Platform.OS === 'android') {
@@ -181,16 +189,45 @@ console.log(user)
       });
     
       console.log(formData)
+    JSON.stringify(formData)
       addProducts(formData,user.token).then(async (res) => {
         if (res) {
           console.log("res", res)
+          if(res.status == 200){
+            ToastMsg(constant.errorActionTypes.success, 'Success', 'Your Product SuccessFully Add')
+          }else if(res.status === 400){
+            ToastMsg(constant.errorActionTypes.error, 'DANGER', res.message)
+            if(res.message === "jwt expired"){
+       
+              // await dispatch(genrateTokens({"refreshToken":user.refreshToken})).then(async (res) => {
+              //   if (res) {
+              //     console.log("res", res)
+          
+              //   if(res.payload.status == 200){
+              //     console.log(res)
+              //   }else{
+              //     ToastMsg(constant.errorActionTypes.error, 'Error', res.payload?.message)
+              //   }
+              //     // navigation.navigate('PhoneVerify', { screen: 'Home', confirm: response })
+              //   } else {
+              //     console.log("error")
+              //     setApiLoader(false)
+              //   }
+          
+              // }).catch(async error=>{
+              //   console.log(error)
+              //   // DialogMsg(constant.errorActionTypes.error, 'Error', 'Invalid password')
+          
+              // })
+            }
+
+          }
           try {
           } catch (error) {
             console.log("error", error)
           }
 
           // setApiLoader(false)
-          ToastMsg(constant.errorActionTypes.success, 'Success', 'OTP successfully send')
         } else {
           // setApiLoader(false)
         }
