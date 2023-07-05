@@ -3,7 +3,7 @@ import {
   createAsyncThunk,
   createEntityAdapter
 } from '@reduxjs/toolkit'
-import { getUser,registerUser,logOutUser } from '../api/ApiUser'
+import { getUser,registerUser,logOutUser,genrateToken } from '../api/ApiUser'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constant } from '../constant/constant';
 
@@ -19,9 +19,13 @@ export const registerUsers = createAsyncThunk('user/registerUser', async (obj) =
   console.log(response)
   return response
 })
-export const LogoutUser = createAsyncThunk('user/getUser', async (obj) => {
-  console.log(obj)
-  const response = await logOutUser(obj)
+export const LogoutUser = createAsyncThunk('user/getUser', async (token) => {
+  const response = await logOutUser(token)
+  console.log(response)
+  return response
+})
+export const genrateTokens = createAsyncThunk('user/getUser', async (token) => {
+  const response = await genrateToken(token)
   console.log(response)
   return response
 })
@@ -37,6 +41,8 @@ const userSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchUser.fulfilled, (state, action) => {
+        console.log(state)
+        console.log(action)
         if(action.payload) {
           userAdapter.setAll(state, [action.payload.data])
         }
