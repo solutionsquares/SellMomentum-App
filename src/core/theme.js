@@ -203,6 +203,24 @@ module.exports = StyleSheet.create({
   },
 
   //card
+  cardContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    margin:5,
+    elevation: 3,
+    width:170,
+  },
+  image: {
+    width: '100%',
+    height: 150,
+    resizeMode:'contain',
+    marginTop:0.1,
+    borderRadius:15
+  },
+  content: {
+    marginTop: 8,
+    padding:10
+  },
   containerCenterd: {
     paddingVertical: 5,
     padding: 10,

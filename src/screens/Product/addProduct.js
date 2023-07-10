@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Input from '../../components/textInput'
 // import ImagePicker from 'react-native-image-picker';
 import { ScrollView } from 'react-native-gesture-handler';
-import { addProducts } from '../../api/productApi'
+import { addProducts,updateProducts } from '../../api/productApi'
 import { fetchUser, selectAll, genrateTokens} from '../../stores/user.reducer'
 import { ADD_PRODUCT_IMAGES, DOLLOR_SYMBOL } from '../../utils/svg'
 import { constant } from '../../constant/constant';
@@ -36,32 +36,37 @@ import {
   launchImageLibrary
 } from 'react-native-image-picker';
 import RNFS from 'react-native-fs';
+import { err } from 'react-native-svg/lib/typescript/xml'
 
 var fs = require('react-native-fs');
 
 
 const theme = require('../../core/theme');
-const AddProduct = ({ navigation }) => {
-  const user = useSelector(state => state?.user?.entities?.undefined)
+const AddProduct = (props) => {
+  console.log(props)  
   const dispatch = useDispatch()
 
+  const user = useSelector(state => state?.user?.entities?.undefined)
+  const category = useSelector(state => state?.category?.entities?.undefined)
+  const categories = category;
 
 
-  const [productName, setProductName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [offerPrice,setOfferPrice] =useState('')
-  const [inStock, setInStock] = useState('');
+
+
+  const [productName, setProductName] = useState(props.route.params?.productsDetails ? props.route.params?.productsDetails.name :'');
+  const [description, setDescription] = useState(props.route.params?.productsDetails ? props.route.params?.productsDetails.description :'');
+  const [price, setPrice] = useState(props.route.params?.productsDetails ? JSON.stringify(props.route.params?.productsDetails.price) :'');
+  const [offerPrice,setOfferPrice] =useState(props.route.params?.productsDetails ? JSON.stringify(props.route.params?.productsDetails.price) :'')
+  const [inStock, setInStock] = useState(props.route.params?.productsDetails ? JSON.stringify(props.route.params?.productsDetails.inStock) :''  );
   const [categoryId, setCategoryId] = useState('');
-  const [selectedCategoryId,setSelectedCategoryId] = useState("")
+  const [selectedCategoryId,setSelectedCategoryId] = useState(props.route.params?.productsDetails ? props.route.params?.productsDetails.categoryId :'' )
   const [imageUri, setImageUri] = useState("https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60");
   const [error, setError] = useState('');
   const [productsImages, setProductsImages] = useState([])
   const [filePath, setFilePath] = useState({});
-
-console.log(user)
-  console.log(user)
-
+  const [defaultCategory, setDefaultCategory]= useState()
+  const [isUpdate,setIsUpdate]= useState(props.route.params?.isUpdate ? props.route.params?.isUpdate:false)
+// let defaultCategory
   let isReadGranted;
   const reqPermission = async () => {
     // if (Platform.OS === 'android') {
@@ -73,20 +78,28 @@ console.log(user)
   };
 
 
-  const category = useSelector(state => state?.category?.entities?.undefined)
 
 
-  const categories = category;
-  console.log('categories', categories);
   const categoriesList = categories && categories.map(({ name, sellerId,_id}) => ({
     value: name,
     key: sellerId,
     id: _id
   }));
+  console.log(categoriesList)
 
   useEffect(() => {
-    reqPermission()
-  })
+    // reqPermission()
+
+    if(selectedCategoryId){
+      for (let index = 0; index < categoriesList?.length; index++) {
+        const element = categoriesList[index];
+        if(element.id === selectedCategoryId){
+          setDefaultCategory(element)
+        } 
+      }
+    }
+    console.log(defaultCategory)
+  },[])
  function validate(){
   
     if (productName === "") {
@@ -188,8 +201,11 @@ console.log(user)
         uri:  filePath.uri,
       });
     
-      console.log(formData)
     JSON.stringify(formData)
+    console.log(formData)
+    console.log(isUpdate)
+
+    if(!isUpdate){
       addProducts(formData,user.token).then(async (res) => {
         if (res) {
           console.log("res", res)
@@ -233,9 +249,36 @@ console.log(user)
         }
 
       })
+    }else{
+    console.log("Update")
+    let productsId = props.route.params?.productsDetails?._id
+    updateProducts(formData,productsId,user.token).then(async (res) => {
+      if (res) {
+        console.log("res", res)
+        if(res.status == 200){
+          ToastMsg(constant.errorActionTypes.success, 'Success', 'Your Product Update SuccessFully ')
+        }else if(res.status === 400){
+          ToastMsg(constant.errorActionTypes.error, 'DANGER', res.message)
+          if(res.message === "jwt expired"){
+          }
+
+        }
+        try {
+        } catch (error) {
+          console.log("error", error)
+        }
+
+        // setApiLoader(false)
+      } else {
+        // setApiLoader(false)
+      }
+
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
+
     }
-
-
   }
   const onItemSelected = (item) => {
     console.log(item.id,'Usman')
@@ -351,7 +394,7 @@ console.log(user)
               setSelected={(val) => setCategoryId(val)}
               data={categoriesList}
               onItemSelected={onItemSelected}
-
+              defaultOption={defaultCategory}   //default selected option
               save="value"
             />
             <View style={styles.priceInput}>
@@ -364,8 +407,6 @@ console.log(user)
                     returnKeyType="next"
                     value={price}
                     onChangeText={(text) => setPrice(text)}
-                    // error={!!email.error}
-                    // errorText={email.error}
                     autoCapitalize="none"
                     autoCompleteType="text"
                     textContentType="text"
@@ -386,8 +427,6 @@ console.log(user)
                     returnKeyType="next"
                     value={offerPrice}
                     onChangeText={(text) => setOfferPrice(text)}
-                    // error={!!email.error}
-                    // errorText={email.error}
                     autoCapitalize="none"
                     autoCompleteType="text"
                     textContentType="text"
@@ -396,7 +435,6 @@ console.log(user)
                     placeholderTextColor={theme.secondaryColor.color}
                     selectionColor={theme.secondaryColor.color}
                     style={theme.inputDarkSquare}
-
                   />
                 </View>
               </View>
@@ -407,8 +445,6 @@ console.log(user)
               returnKeyType="next"
               value={inStock}
               onChangeText={(text) => setInStock(text)}
-              // error={!!email.error}
-              // errorText={email.error}
               autoCapitalize="none"
               autoCompleteType="text"
               textContentType="text"
@@ -425,8 +461,6 @@ console.log(user)
               returnKeyType="next"
               value={description}
               onChangeText={(text) => setDescription(text)}
-              // error={!!email.error}
-              // errorText={email.error}
               autoCapitalize="none"
               autoCompleteType="text"
               textContentType="text"

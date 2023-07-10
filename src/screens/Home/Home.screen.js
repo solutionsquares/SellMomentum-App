@@ -16,7 +16,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchUser, selectAll } from '../../../src/stores/user.reducer'
 import SearchInput from '../../components/searchInput'
 import SagmentView from '../../components/sagment'
-import { fetchSellerProduct, fetchCategories } from '../../stores/product&Category.reducer'
+import { fetchCategories } from '../../stores/product&Category.reducer'
+import { fetchSellerProduct } from '../../stores/sellerProducts.reducer'
 import { FloatingAction } from "react-native-floating-action";
 import CategoryComponent from '../../components/categoryComponents/categoryComponents'
 import CustomButton from '../../components/buttonComponents/buttonComponents'
@@ -75,7 +76,7 @@ const Home = ({ navigation }) => {
     await dispatch(fetchCategories(user.token)).then((res) => {
       console.log(res);
       if (res.payload) {
-        const top7Categories = res.payload.data.slice(0, 8);
+        const top7Categories = res.payload?.data?.slice(0, 8);
         setCategories(top7Categories)
       }
     }).catch((err) => {

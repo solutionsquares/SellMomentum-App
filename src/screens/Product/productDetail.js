@@ -19,16 +19,22 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 const theme = require('../../core/theme');
 
-const ProductDetail = ({ navigation }) => {
+const ProductDetail = (props) => {
+    console.log(props)
+    // console.log(productsDetails)
+    const navigation = props.navigation
+    const [productsDetails, setProductsDeatails] = useState(props.route.params?.productsDetails)
     const data = [
         { id: 1, title: 'Product 1', price: '$10', image: require('../../assets/icons/products1.webp') },
         { id: 2, title: 'Product 2', price: '$20', image: require('../../assets/icons/products2.webp') },
         { id: 3, title: 'Product 3', price: '$30', image: require('../../assets/icons/products3.webp') },
-        // { id: 4, title: 'Product 3', price: '$30', image: require('../../assets/icons/products1.webp') },
-        // Add more data objects as needed
+    
     ];
     useEffect(() => {
-        getproductDetail()
+        // getproductDetail()
+        // console.log(props.route.params.productsDetails);
+        // setProductsDeatails(props.route.params.productsDetails)
+        console.log(productsDetails)
     }, [])
     const getproductDetail = () => {
         //api call to fetch single product detail
@@ -65,9 +71,6 @@ const ProductDetail = ({ navigation }) => {
                             return (
                                 <View key={key} style={[item.css]}>
                                     <Image style={styles.image} source={item.image} ></Image>
-                                
-                                    
-
                                 </View>
                             )
                         })}
@@ -81,10 +84,10 @@ const ProductDetail = ({ navigation }) => {
                                     </View>
                     <View style={[theme.containerCenterdColumn,]}>
                         <View style={theme.padding5 }>
-                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000' }}>Tradly Store </Text>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000' }}>{productsDetails?.name}</Text>
                         </View>
                         <View style={[theme.padding5,{ flexDirection: 'row', }]}>
-                            <Text style={[styles.discountedPrice, theme.primaryColor]}>$25 </Text>
+                            <Text style={[styles.discountedPrice, theme.primaryColor]}>${productsDetails?.price}</Text>
                             <Text style={[styles.originalPrice, styles.originalPriceText]}>$50</Text>
                             <Text style={[styles.originalPriceText]}>50% off</Text>
                         </View>
@@ -107,10 +110,7 @@ const ProductDetail = ({ navigation }) => {
                     </View>
                     <View style={[theme.containerCenterd, styles.description]}>
 
-                        <Text >It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                            The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.
-                            Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
-                            Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</Text>
+                        <Text >{productsDetails?.description}</Text>
 
                     </View>
                     <View style={[styles.detailsCard]}>

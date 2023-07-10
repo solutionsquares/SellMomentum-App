@@ -94,6 +94,7 @@ const refreshAccessToken=(config)=>{
 
 }
 export const GetWithHeaderToken = async (method, endpoint, token) => {
+  console.log(token)
   tokens = token
   console.log(tokens)
 
@@ -105,8 +106,25 @@ export const Post = async (method, endpoint, params) => {
   let v = await sellMomentumTask(method, endpoint, params);
   return v;
 };
+export const DeleteWithHeaderToken = async(method,endpoint,token) =>{
+  console.log("method",method)
+  console.log("endpoint",endpoint)
+  console.log("endpoint",token)
+  tokens = ''
+  tokens = token
+
+
+  let v = await sellMomentumTask(method, endpoint);
+  return v;
+}
 
 export const PostWithHeaderToken = async (method, endpoint, params ,token) => {
+  tokens = ''
+  tokens = token
+  let v = await sellMomentumTask(method, endpoint, params);
+  return v;
+};
+export const PatchtWithHeaderToken = async (method, endpoint, params ,token) => {
   tokens = ''
   tokens = token
   let v = await sellMomentumTask(method, endpoint, params);
@@ -136,7 +154,8 @@ function sellMomentumTask(method, endpoint, params) {
               console.log('Success:', response.data);
               return response.data;
             } else if (response.data.status === 400) {
-              console.log('Not Found:', response.statusText);
+              // apiCall()
+              console.log('Not Found:', response.data.message,);
               return response.data;
             } else if (response.data.status === 500) {
               console.log('Internal Server Error');
