@@ -43,7 +43,7 @@ const userSlice = createSlice({
       .addCase(fetchUser.fulfilled, (state, action) => {
         console.log(state)
         console.log(action)
-        if(action.payload) {
+        if(action.payload.status == 200) {
           userAdapter.setAll(state, [action.payload.data])
         }
         userAdapter.getSelectors(state => state.user)

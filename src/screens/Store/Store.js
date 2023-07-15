@@ -161,7 +161,7 @@ const StoreScreen = ({navigation}) => {
                             <Text style={{ color: 'green' }}>Tradly</Text>
                         </View>
                         <View style={[theme.rightText,{marginEnd:10}]}>
-                            <Text>$10</Text>
+                            <Text>${item.price}</Text>
                         </View>
                     </View>
                 </View>

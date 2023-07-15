@@ -20,6 +20,7 @@ import WishList from '../screens/WishList/wishList'
 import CartComponent from '../screens/Cart/cart'
 import OrderHistoryScreen from '../screens/OrderHistory/OrderHistory'
 import StoreScreen from '../screens/Store/Store'
+import CategoryWiseProducts from '../screens/CategoryWiseProducts/CategoryWiseProducts'
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 const theme = require('../core/theme');
@@ -36,7 +37,7 @@ function AuthTabs() {
         options={{
           // headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            return <FontAwesome name={'home'} size={20} color={color} />
+            return <FontAwesome name={'home'} size={20}  style={[focused ? theme.primaryColor : theme.grayColor,]} />
           }
         }}
       />
@@ -172,6 +173,21 @@ const MainNavigation = () => {
           options={{
             headerShown: true,
             title: 'Add Product',
+            headerStyle: {
+              backgroundColor:'#33907C'
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="CategoryWiseProducts"
+          component={CategoryWiseProducts}
+          options={{
+            headerShown: true,
+            title: 'CategoryWise Products',
             headerStyle: {
               backgroundColor:'#33907C'
             },

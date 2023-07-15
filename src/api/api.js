@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux'
 import userSlice from "../stores/user.reducer";
 
-const host = 'http://192.168.1.158:9000/v1';
+const host = 'http://192.168.1.159:9000/v1';
 var tokens = '';
 
 export async function getUser(obj) {

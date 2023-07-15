@@ -12,18 +12,21 @@ import {
   FlatList
 
 } from 'react-native'
-const CategoryComponent = ({data}) => {
+const CategoryComponent = ({data,navigation}) => {
+  console.log(navigation)
 
-console.log(data)
-const handleCategoryPress = () => {
-  console.log('Button pressed!');
+
+const handleCategoryPress = (data) => {
+  console.log('Button pressed!',data);
+  navigation.navigate('CategoryWiseProducts',{categoryDetails:data})
+
 };
       
   const renderCategoryItem = ({ item }) => (
     <View style={{padding:2}}>
     <TouchableOpacity
       style={styles.categoryContainer}
-      onPress={() => handleCategoryPress(item.id)}
+      onPress={() => handleCategoryPress(item)}
     >
       <Image source={item?.image ? item?.image : require('../../assets/images/test.jpeg')} style={styles.image} />
       <Text style={styles.category}>{item.name}</Text>

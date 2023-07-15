@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   SafeAreaView,
   View,
-  Text,
+  Text, ActivityIndicator,
   StatusBar,
   TouchableOpacity,
   StyleSheet,
@@ -22,6 +22,7 @@ import validationMessages from "../../utils/validationMessages.json"
 
 const theme = require('../../core/theme');
 const Login = ({ navigation }) => {
+  const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
   const [ApiLoader, setApiLoader] = useState(false);
@@ -45,6 +46,9 @@ const Login = ({ navigation }) => {
   function SignUpScreen() {
     navigation.replace('Signup', { screen: 'Signup' })
   }
+  useEffect(() => {
+    setLoading(false)
+  }, [])
   const validateFields = () => {
     const emailRegex = /\S+@\S+\.\S+/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
@@ -63,120 +67,131 @@ const Login = ({ navigation }) => {
     return true;
   };
   async function LoginFun() {
+    setLoading(true)
     validateFields()
     setApiLoader(true)
-    if(validateFields() == true){
-    await dispatch(fetchUser({
-      email: email.value,
-      password: password.value
-    })).then(async (res) => {
-      if (res) {
-        console.log("res", res)
+    if (validateFields() == true) {
+      await dispatch(fetchUser({
+        email: email.value,
+        password: password.value
+      })).then(async (res) => {
+        if (res) {
+          console.log("res", res)
+          setLoading(false)
+          setApiLoader(false)
+          if (res.payload.status === 200) {
+            navigation.replace('HomeBase', { screen: 'Home' })
+          } else {
+            ToastMsg(constant.errorActionTypes.error, 'Error', res.payload?.message)
 
-        setApiLoader(false)
-          if(res.payload.status === 200){
-        navigation.replace('HomeBase', { screen: 'Home' })
-      }else{
-        ToastMsg(constant.errorActionTypes.error, 'Error', res.payload?.message)
+          }
+          // navigation.navigate('PhoneVerify', { screen: 'Home', confirm: response })
+        } else {
+          console.log("error")
+          setLoading(false)
+        }
 
-      }
-        // navigation.navigate('PhoneVerify', { screen: 'Home', confirm: response })
-      } else {
-        console.log("error")
-        setApiLoader(false)
-      }
+      }).catch(async error => {
+        console.log(error)
+        setLoading(false)
 
-    }).catch(async error=>{
-      console.log(error)
-      // DialogMsg(constant.errorActionTypes.error, 'Error', 'Invalid password')
+        // DialogMsg(constant.errorActionTypes.error, 'Error', 'Invalid password')
 
-    })
+      })
+    }
+
   }
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="small" />
+      </View>
+    );
+  } else {
 
-  }
+    return (
+      <>
 
-  return (
-    <>
-
-      <View style={[styles.container, theme.primaryBGColor]}>
-        <StatusBar barStyle="light-content" style={[theme.primaryBGColor]} />
-        <View style={styles.topBox}>
-          <View>
-            <Text style={[theme.whiteTitle, styles.allMargen]}>Welcome to tradly</Text>
-          </View>
-          <View>
-            <Text style={[theme.whiteText, styles.allMargen]}>Login to your account</Text>
-          </View>
-        </View>
-        <View style={styles.bottomBox}>
-          <Input
-            label="Email/Mobile Number"
-            returnKeyType="next"
-            value={email.value}
-            onChangeText={(text) => setEmail({ value: text, error: '' })}
-            error={!!email.error}
-            errorText={email.error}
-            autoCapitalize="none"
-            autoCompleteType="email"
-            textContentType="email"
-            keyboardType={'email'}
-            maxLength={100}
-            // placeholderTextColor={theme.colors.white}
-            placeholderTextColor={'#fff'}
-            selectionColor="#fff"
-            style={theme.input}
-          />
-          <View style={[theme.rowView,theme.alignItemCenter]}>
-          <Input
-            label="Password"
-            returnKeyType="next"
-            value={password.value}
-            onChangeText={(text) => setPassword({ value: text, error: '' })}
-            error={!!password.error}
-            errorText={password.error}
-            autoCapitalize="none"
-            autoCompleteType="text"
-            textContentType="text"
-            keyboardType={'text'}
-            maxLength={100}
-            placeholderTextColor={'#fff'}
-            selectionColor="#fff"
-            style={theme.input}
-            secureTextEntry={show}
-          />
-          <Icon
-            name={show ? 'eye' :'eye-with-line'}
-            size={20}
-            style={[theme.whiteColor,theme.margin40M,theme.marginTop60M]}
-            onPress={() =>
-              setShow(!show)
-            }></Icon>
-            </View>
-          <TouchableOpacity onPress={() => LoginFun()}>
-            <View style={[styles.nextButton, theme.whiteBGColor]}>
-
-              <Text style={[styles.buttonText, theme.primaryColor]}>Login</Text>
-
-            </View>
-          </TouchableOpacity>
-          <View style={theme.centerCss}>
-            <Text style={[theme.whiteText, styles.allMargen]}>Forgot your password?</Text>
-          </View>
-          <View style={[theme.centerCss, theme.rowView]}>
+        <View style={[styles.container, theme.primaryBGColor]}>
+          <StatusBar barStyle="light-content" style={[theme.primaryBGColor]} />
+          <View style={styles.topBox}>
             <View>
-              <Text style={[theme.whiteText, styles.allMargen]}>Don’t have an account? </Text>
+              <Text style={[theme.whiteTitle, styles.allMargen]}>Welcome to tradly</Text>
             </View>
-            <TouchableOpacity onPress={() => SignUpScreen()}>
-              <View>
-                <Text style={[theme.whiteText, styles.allMargen, styles.boldText]}>Sign up</Text>
+            <View>
+              <Text style={[theme.whiteText, styles.allMargen]}>Login to your account</Text>
+            </View>
+          </View>
+          <View style={styles.bottomBox}>
+            <Input
+              label="Email/Mobile Number"
+              returnKeyType="next"
+              value={email.value}
+              onChangeText={(text) => setEmail({ value: text, error: '' })}
+              error={!!email.error}
+              errorText={email.error}
+              autoCapitalize="none"
+              autoCompleteType="email"
+              textContentType="email"
+              keyboardType={'email'}
+              maxLength={100}
+              // placeholderTextColor={theme.colors.white}
+              placeholderTextColor={'#fff'}
+              selectionColor="#fff"
+              style={theme.input}
+            />
+            <View style={[theme.rowView, theme.alignItemCenter]}>
+              <Input
+                label="Password"
+                returnKeyType="next"
+                value={password.value}
+                onChangeText={(text) => setPassword({ value: text, error: '' })}
+                error={!!password.error}
+                errorText={password.error}
+                autoCapitalize="none"
+                autoCompleteType="text"
+                textContentType="text"
+                keyboardType={'text'}
+                maxLength={100}
+                placeholderTextColor={'#fff'}
+                selectionColor="#fff"
+                style={theme.input}
+                secureTextEntry={show}
+              />
+              <Icon
+                name={show ? 'eye' : 'eye-with-line'}
+                size={20}
+                style={[theme.whiteColor, theme.margin40M, theme.marginTop60M]}
+                onPress={() =>
+                  setShow(!show)
+                }></Icon>
+            </View>
+            <TouchableOpacity onPress={() => LoginFun()}>
+              <View style={[styles.nextButton, theme.whiteBGColor]}>
+
+                <Text style={[styles.buttonText, theme.primaryColor]}>Login</Text>
+
               </View>
             </TouchableOpacity>
+            <View style={theme.centerCss}>
+              <Text style={[theme.whiteText, styles.allMargen]}>Forgot your password?</Text>
+            </View>
+            <View style={[theme.centerCss, theme.rowView]}>
+              <View>
+                <Text style={[theme.whiteText, styles.allMargen]}>Don’t have an account? </Text>
+              </View>
+              <TouchableOpacity onPress={() => SignUpScreen()}>
+                <View>
+                  <Text style={[theme.whiteText, styles.allMargen, styles.boldText]}>Sign up</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
 
-      </View>
-    </>
-  )
+        </View>
+      </>
+    )
+  }
 }
 
 const styles = StyleSheet.create({

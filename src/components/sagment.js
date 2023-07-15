@@ -7,7 +7,7 @@ const SagmentView = ({ navigation,sagmentData }) => {
   const [sagmentDataNew,setSagmentData] = useState(sagmentData)
   const renderItem = ({ item }) => {
     return (
-      <View style={[styles.item,theme.garyBorderColor,{width:(windowWidth/sagmentDataNew.length)-21,backgroundColor:'red'}]}>
+      <View style={[styles.item,theme.garyBorderColor,theme.primaryBGColor,{width:(windowWidth/sagmentDataNew.length)-21,}]}>
         {/* Render your item content */}
         <View style={[theme.rowView,theme.horizontal10Padding,styles.centerBox]}>
         <FontAwesome name={item.icon} size={15} style={[theme.whiteColor,{paddingHorizontal:5}]} /> 

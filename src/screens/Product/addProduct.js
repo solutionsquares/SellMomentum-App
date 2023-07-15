@@ -9,7 +9,8 @@ import {
   TextInput,
   Image,
   Dimensions,
-  FlatList
+  FlatList,
+  ActivityIndicator
 
 } from 'react-native'
 import { SelectList } from 'react-native-dropdown-select-list'
@@ -36,7 +37,6 @@ import {
   launchImageLibrary
 } from 'react-native-image-picker';
 import RNFS from 'react-native-fs';
-import { err } from 'react-native-svg/lib/typescript/xml'
 
 var fs = require('react-native-fs');
 
@@ -49,10 +49,7 @@ const AddProduct = (props) => {
   const user = useSelector(state => state?.user?.entities?.undefined)
   const category = useSelector(state => state?.category?.entities?.undefined)
   const categories = category;
-
-
-
-
+  const [loading, setLoading] = useState(true);
   const [productName, setProductName] = useState(props.route.params?.productsDetails ? props.route.params?.productsDetails.name :'');
   const [description, setDescription] = useState(props.route.params?.productsDetails ? props.route.params?.productsDetails.description :'');
   const [price, setPrice] = useState(props.route.params?.productsDetails ? JSON.stringify(props.route.params?.productsDetails.price) :'');
@@ -89,7 +86,7 @@ const AddProduct = (props) => {
 
   useEffect(() => {
     // reqPermission()
-
+    setLoading(false)
     if(selectedCategoryId){
       for (let index = 0; index < categoriesList?.length; index++) {
         const element = categoriesList[index];
@@ -183,7 +180,7 @@ const AddProduct = (props) => {
   }
 }, [categoryId])
   async function handleAddProduct() {
-    
+    setLoading(true)
     validate()
     console.log(validate())
     if( validate() == true){
@@ -209,6 +206,7 @@ const AddProduct = (props) => {
       addProducts(formData,user.token).then(async (res) => {
         if (res) {
           console.log("res", res)
+          setLoading(false)
           if(res.status == 200){
             ToastMsg(constant.errorActionTypes.success, 'Success', 'Your Product SuccessFully Add')
           }else if(res.status === 400){
@@ -245,9 +243,8 @@ const AddProduct = (props) => {
 
           // setApiLoader(false)
         } else {
-          // setApiLoader(false)
+          setLoading(false)
         }
-
       })
     }else{
     console.log("Update")
@@ -255,6 +252,7 @@ const AddProduct = (props) => {
     updateProducts(formData,productsId,user.token).then(async (res) => {
       if (res) {
         console.log("res", res)
+        setLoading(false)
         if(res.status == 200){
           ToastMsg(constant.errorActionTypes.success, 'Success', 'Your Product Update SuccessFully ')
         }else if(res.status === 400){
@@ -270,15 +268,21 @@ const AddProduct = (props) => {
 
         // setApiLoader(false)
       } else {
-        // setApiLoader(false)
+        setLoading(false)
+
       }
 
     }).catch((err)=>{
+      setLoading(false)
+
       console.log(err)
     })
   }
 
+    }else{
+      setLoading(false)
     }
+    
   }
   const onItemSelected = (item) => {
     console.log(item.id,'Usman')
@@ -325,6 +329,13 @@ const AddProduct = (props) => {
     { id: 1, title: 'Product 1', price: '$10', image: require('../../assets/images/gs1.png') },
   ];
 
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="small" />
+      </View>
+    );
+  } else {
   return (
     <>
 
@@ -484,6 +495,7 @@ const AddProduct = (props) => {
       </View>
     </>
   )
+  }
 }
 
 const styles = StyleSheet.create({

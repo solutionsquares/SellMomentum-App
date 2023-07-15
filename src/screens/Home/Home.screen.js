@@ -204,7 +204,7 @@ const Home = ({ navigation }) => {
             </View>
             <View style={[global.paddingHorizontal20]}>
               <View>
-                <CategoryComponent data={categories} ></CategoryComponent>
+                <CategoryComponent data={categories} navigation={navigation}></CategoryComponent>
               </View>
               <View>
                 <View style={styles.containerCenterd}>
@@ -219,12 +219,13 @@ const Home = ({ navigation }) => {
                     />
                   </View>
                 </View>
-                <FlatList
-                  data={data}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item.id.toString()}
-                  horizontal
-                />
+               
+                  <FlatList
+                 horizontal={true}
+                 data={data}
+                 renderItem={renderItem}
+                 keyExtractor={item => item.id}
+             />
               </View>
             </View>
 
